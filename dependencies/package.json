@@ -4,10 +4,10 @@
   "description": "Virtual Machine for Scratch 3.0",
   "author": "Massachusetts Institute of Technology",
   "license": "BSD-3-Clause",
-  "homepage": "https://github.com/scratchfoundation/scratch-vm#readme",
+  "homepage": "https://github.com/HwangGB/scratch-vm#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/scratchfoundation/scratch-vm.git",
+    "url": "https://github.com/HwangGB/scratch-vm.git",
     "sha": "52ca9370207ab34dfb9fac15decb829c397f9d47"
   },
   "main": "./dist/node/scratch-vm.js",
