@@ -20,7 +20,10 @@ if [[ $BASH_SOURCE = */* ]]; then
 fi
 
 echo "Commit any changes"
-git add your-scratch-extension
+git config --global user.email "guebin98@gmail.com"
+git config --global user.name "HwangGB"
+git config --global --add safe.directory /workspaces/scratch_test
+#git add your-scratch-extension
 git add dependencies
 git commit -m "Update"
 git push origin master
