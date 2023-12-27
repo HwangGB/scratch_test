@@ -8,8 +8,8 @@ RUN chown node:node /usr/app
 USER node
 
 # get the base Scratch code
-RUN git clone --depth=1 https://github.com/LLK/scratch-vm.git
-RUN git clone --depth=1 https://github.com/LLK/scratch-gui.git
+RUN git clone --depth=1 https://github.com/HwangGB/scratch-vm.git
+RUN git clone --depth=1 https://github.com/HwangGB/scratch-gui.git
 
 # build Scratch vm
 WORKDIR /usr/app/scratch-vm

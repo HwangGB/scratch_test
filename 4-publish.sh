@@ -20,7 +20,7 @@ if [[ $BASH_SOURCE = */* ]]; then
 fi
 
 echo "Commit any changes"
-git add your-scratch-extension
+#git add your-scratch-extension
 git add dependencies
 git commit -m "Update"
 git push origin master
