@@ -1,6 +1,6 @@
 {
   "name": "Scratch Extension development environment",
-  "image": "dalelane/scratch-extension-devenv:202303182007",
+  "image": "guebin98/foxbot:1.0",
   "features": {
   },
   "forwardPorts": [ 8000 ]
