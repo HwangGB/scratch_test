@@ -7,11 +7,11 @@ if [ -z "$SCRATCH_SRC_HOME" ]; then
     exit 1
 fi
 
-echo "Checking that Scratch has been patched"
-if [ ! -f "$SCRATCH_SRC_HOME/patched" ]; then
-    echo "Scratch has not yet been patched. Run ./0-setup.sh"
-    exit 1
-fi
+#echo "Checking that Scratch has been patched"
+#if [ ! -f "$SCRATCH_SRC_HOME/patched" ]; then
+#    echo "Scratch has not yet been patched. Run ./0-setup.sh"
+#    exit 1
+#fi
 
 # allow this script to be run from other locations, despite the
 #  relative file paths used in it
@@ -25,6 +25,7 @@ git config --global user.name "HwangGB"
 git config --global --add safe.directory /workspaces/scratch_test
 #git add your-scratch-extension
 git add dependencies
+git add .
 git commit -m "Update"
 git push origin master
 

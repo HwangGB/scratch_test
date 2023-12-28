@@ -36,5 +36,5 @@ cd $SCRATCH_SRC_HOME/scratch-gui
 #ln -s $DIR/your-extension-background.png your-extension-background.png
 #ln -s $DIR/your-extension-icon.png your-extension-icon.png
 
-echo "Marking the Scratch source as customized"
-touch $SCRATCH_SRC_HOME/patched
+#echo "Marking the Scratch source as customized"
+#touch $SCRATCH_SRC_HOME/patched
