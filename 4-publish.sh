@@ -19,14 +19,14 @@ if [[ $BASH_SOURCE = */* ]]; then
   cd -- "${BASH_SOURCE%/*}/" || exit
 fi
 
-#echo "Commit any changes"
-#git config --global user.email "guebin98@gmail.com"
-#git config --global user.name "HwangGB"
-#git config --global --add safe.directory /workspaces/scratch_test
-#git add my_module
-#git add dependencies
-#git commit -m "Update"
-#git push origin master
+echo "Commit any changes"
+git config --global user.email "guebin98@gmail.com"
+git config --global user.name "HwangGB"
+git config --global --add safe.directory /workspaces/scratch_test
+git add my_module
+git add dependencies
+git commit -m "Update"
+git push origin master
 
 echo "Building the Scratch fork"
 ./2-build.sh
