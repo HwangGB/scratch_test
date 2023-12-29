@@ -7,6 +7,12 @@ if [ -z "$SCRATCH_SRC_HOME" ]; then
     exit 1
 fi
 
+#####
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $SCRATCH_SRC_HOME/scratch-vm/src/extensions
+cp -f $DIR/my_module/scratch-vm/scratch3_foxbot/index.js scratch3_foxbot/index.js
+#####
+
 echo "BUILDING SCRATCH VM ..."
 cd $SCRATCH_SRC_HOME/scratch-vm
 NODE_OPTIONS='--openssl-legacy-provider' ./node_modules/.bin/webpack --bail
