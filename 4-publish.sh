@@ -23,8 +23,9 @@ echo "Commit any changes"
 git config --global user.email "guebin98@gmail.com"
 git config --global user.name "HwangGB"
 git config --global --add safe.directory /workspaces/scratch_test
-git add my_module
-git add dependencies
+#git add my_module
+#git add dependencies
+git add .
 git commit -m "Update"
 git push origin master
 
