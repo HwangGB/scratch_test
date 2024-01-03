@@ -36,10 +36,7 @@ const CMD_Type = {
 
     CMD_MOTION: 0xA1,
     CMD_SENSE: 0xA2,
-    CMD_INTERACTIVE: 0xA3,
-    CMD_CTROL: 0xA4,
-    CMD_MATH: 0xA5,
-    CMD_EXECUTION: 0xFC
+    CMD_INTERACTIVE: 0xA3
 };
 
 // 3rd byte
