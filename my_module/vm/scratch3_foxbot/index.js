@@ -120,7 +120,7 @@ class Scratch3FoxBotExtension {
                     opcode: 'ChangeFace',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: 'Change Foxbot Face to [MODE]',
+                        default: 'Change Foxbot Face : [MODE]',
                         description: 'Change Foxbot Face'
                     }),
                     arguments: {
