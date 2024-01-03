@@ -18,11 +18,11 @@ echo $DIR
 
 echo "Adding extension to Scratch source"
 cd $SCRATCH_SRC_HOME/scratch-vm/src/extensions
-cp -f $DIR/my_module/scratch-vm/scratch3_foxbot/index.js scratch3_foxbot/index.js
+cp -f $DIR/my_module/vm/scratch3_foxbot/index.js scratch3_foxbot/index.js
 
 echo "Patching Scratch source to enable extension"
 cd $SCRATCH_SRC_HOME/scratch-vm/src/extension-support
-cp -f $DIR/my_module/scratch-vm/extension-manager.js .
+cp -f $DIR/my_module/vm/extension-manager.js .
 
 cd $SCRATCH_SRC_HOME/scratch-vm
 mv package.json $DIR/dependencies/package.json
@@ -31,11 +31,11 @@ mv package-lock.json $DIR/dependencies/package-lock.json
 ln -s $DIR/dependencies/package-lock.json .
 
 cd $SCRATCH_SRC_HOME/scratch-gui/src/lib/libraries/extensions
-cp -f $DIR/my_module/scratch-gui/index.jsx .
+cp -f $DIR/my_module/gui/index.jsx .
 
 echo "Copying in the Scratch extension files"
 cd $SCRATCH_SRC_HOME/scratch-gui/src/lib/libraries/extensions
-cp -Rf $DIR/my_module/scratch-gui/foxbot .
+cp -Rf $DIR/my_module/gui/foxbot .
 
 #echo "Marking the Scratch source as customized"
 #touch $SCRATCH_SRC_HOME/patched
