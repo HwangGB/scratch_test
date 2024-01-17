@@ -3,11 +3,9 @@ const ArgumentType = require('../../extension-support/argument-type');
 //const TargetType = require('../../extension-support/target-type');
 //const log = require('../../util/log');
 //const cast = require('../../util/cast');
-const BLE = require('../../io/ble');
 const formatMessage = require('format-message');
 const Base64Util = require('../../util/base64-util');
 const FoxLink = 'ws://localhost:5500';
-
 
 /**
  * Icon png to be displayed at the left edge of each extension block, encoded as a data URI.
@@ -90,8 +88,9 @@ class Scratch3FoxBotExtension {
         return {
             id: 'foxbot',
             name: 'foxbot',
-            color1: '#f8fac8',
-            color2: '#378ee6',
+            color1: '#5b8c00',
+            color2: '#3f6600',
+            color3: '#000000',
             
             // icons to display
             blockIconURI: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAAAAACyOJm3AAAAFklEQVQYV2P4DwMMEMgAI/+DEUIMBgAEWB7i7uidhAAAAABJRU5ErkJggg==',
