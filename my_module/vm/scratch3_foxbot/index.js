@@ -90,8 +90,8 @@ class Scratch3FoxBotExtension {
         return {
             id: 'foxbot',
             name: 'foxbot',
-            color1: '#f8fac8',
-            color2: '#378ee6',
+            color1: '#378ee6',
+            color2: '#f8fac8',
             
             // icons to display
             blockIconURI: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAAAAACyOJm3AAAAFklEQVQYV2P4DwMMEMgAI/+DEUIMBgAEWB7i7uidhAAAAABJRU5ErkJggg==',
