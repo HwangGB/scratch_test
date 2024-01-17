@@ -25,7 +25,6 @@ const HEAD_CMD = {
 const CMD_DIRECTION = {
     SEND: 0xCD,
     RECEIVE: 0xCB,
-
     DATA_UP: 0xAA,
     DATA_DOWN: 0xAF
 };
