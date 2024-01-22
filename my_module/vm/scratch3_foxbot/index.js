@@ -268,9 +268,9 @@ class Scratch3FoxBotExtension {
                 },
                 {
                     opcode: 'getConnected',
-                    blockType: BlockType.BOOLEAN,
+                    blockType: BlockType.REPORTER,
                     text: formatMessage({
-                        default: 'foxbot connected?'
+                        default: 'Connection state'
                     })
                 },
                 '---',
