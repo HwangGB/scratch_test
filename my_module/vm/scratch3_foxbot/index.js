@@ -75,32 +75,31 @@ class FoxBot {
 
     /*** WEB ***/
     ws_ConnectBot() {
-        const myws = new WebSocket(FoxLink);
-		this.ws=myws;
+        this.ws=new WebSocket(FoxLink);
+        this.ws.binaryType = 'string';
 
         this.ws.onopen = this.ws_openSocket;
         this.ws.onclose = this.ws_closeSocket;
         this.ws.onerror = this.ws_errorSocket;
-        this.ws.onmessage = this.ws_getData;
-
-        this.ws_sendData = this.ws_sendData.bind(this);
-        this.ws_getData = this.ws_getData.bind(this);
-        this.ws_openSocket = this.ws_openSocket.bind(this);
-        this.ws_closeSocket = this.ws_closeSocket.bind(this);
-        this.ws_errorSocket = this.ws_errorSocket.bind(this);        
+        this.ws.onmessage = this.ws_getData;    
     }
 
+    ws_isConnected () {
+        let connected = false;
+        if (this.ws.readyState === WebSocket.OPEN) {
+            connected = true;
+        }
+        return connected;
+    }
 
     ws_openSocket () {
         //  console.log('WebSocket connection: ', this.ws.readyState);
         console.log('WebSocket connection Opened');
 		ws.send("WebSocket connection Opened");
-        foxConnected = true;
     }
 
     ws_closeSocket () {
         console.log('WebSocket connection Closed!');
-        foxConnected = false;
     }
 
     ws_errorSocket (err) {
@@ -259,11 +258,19 @@ class Scratch3FoxBotExtension {
             // your Scratch blocks
             blocks: [                
                 {
-                    opcode: 'ConnectFoxBot',                    
+                    opcode: 'ConnectFoxBot_Web',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: 'Connect Foxbot',
+                        default: 'Connect Foxbot - web',
                         description: 'Connect Foxbot via websocket'
+                    })
+                },
+                {
+                    opcode: 'ConnectFoxBot_BLE',                    
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: 'Connect Foxbot - ble',
+                        description: 'Connect Foxbot via bluetooth'
                     })
                 },
                 {
@@ -337,9 +344,14 @@ class Scratch3FoxBotExtension {
      *  this will be called when the block is used
      */
     
-    ConnectFoxBot ()
+    ConnectFoxBot_Web ()
     {
         this._peripheral.ws_ConnectBot();
+    }
+
+    ConnectFoxBot_Ble ()
+    {
+        //this._peripheral.ws_ConnectBot();
     }
 
     ChangeFace (args) {
@@ -364,6 +376,7 @@ class Scratch3FoxBotExtension {
     }
 
     getConnected () {
+        foxConnected = this._peripheral.ws_isConnected
         return foxConnected;
     }
 }

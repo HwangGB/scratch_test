@@ -3,6 +3,8 @@ import {FormattedMessage} from 'react-intl';
 
 import foxbotIconURL from './foxbot/foxbot.png';
 import foxbotInsetIconURL from './foxbot/foxbot-small.svg';
+import foxbotConnectionIconURL from './foxbot/foxbot-illustration.svg';
+import foxbotConnectionSmallIconURL from './foxbot/foxbot-small.svg';
 
 import musicIconURL from './music/music.png';
 import musicInsetIconURL from './music/music-small.svg';
@@ -68,7 +70,21 @@ export default [
                 id="gui.extension.foxbot.description"
             />
         ),
-        featured: true
+        featured: true,
+        disabled: false,
+        bluetoothRequired: true,
+        internetConnectionRequired: true,
+        launchPeripheralConnectionFlow: true,
+        useAutoScan: false,
+        connectionIconURL: foxbotConnectionIconURL,
+        connectionSmallIconURL: foxbotConnectionSmallIconURL,
+        connectingMessage: (
+            <FormattedMessage
+                defaultMessage="Connecting"
+                description="Message to help people connect to their foxbot."
+                id="gui.extension.foxbot.connectingMessage"
+            />
+        ),
     },
     {
         name: (
