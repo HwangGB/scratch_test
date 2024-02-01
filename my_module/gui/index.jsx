@@ -53,14 +53,9 @@ import gdxforConnectionSmallIconURL from './gdxfor/gdxfor-small.svg';
 
 export default [
     {
-        name: (
-            <FormattedMessage
-                defaultMessage="Foxbot"
-                description="Name for the 'Foxbot' extension"
-                id="gui.extension.foxbot.name"
-            />
-        ),
+        name: 'Foxbot',
         extensionId: 'foxbot',
+        collaborator: 'KAIST NMAIL',
         iconURL: foxbotIconURL,
         insetIconURL: foxbotInsetIconURL,
         description: (
