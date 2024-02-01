@@ -328,13 +328,13 @@ class Scratch3FoxBotExtension {
                 //         description: 'Connect Foxbot via bluetooth'
                 //     })
                 // },
-                // {
-                //     opcode: 'getConnected',
-                //     blockType: BlockType.REPORTER,
-                //     text: formatMessage({
-                //         default: 'Connection state'
-                //     })
-                // },
+                {
+                    opcode: 'getConnected',
+                    blockType: BlockType.REPORTER,
+                    text: formatMessage({
+                        default: 'Connection state'
+                    })
+                },
                 '---',
                 {
                     opcode: 'ChangeFace',                    
@@ -442,10 +442,9 @@ class Scratch3FoxBotExtension {
     //     return strDataReceved;
     // }
 
-    // getConnected () {
-    //     foxConnected = this._peripheral.ws_isConnected
-    //     return foxConnected;
-    // }
+    getConnected () {
+        return connected;
+    }
 
     connect() {
         if (connected) {
@@ -458,7 +457,7 @@ class Scratch3FoxBotExtension {
             //window.socketr = new WebSocket("ws://127.0.0.1:5500");
             window.socketr = new WebSocket(url);
             // msg = JSON.stringify({"id": "to_rpi_gateway"});
-            msg = "scratch connected!";
+            msg = 'scratch connected!';
         }
 
          // websocket event handlers
