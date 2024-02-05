@@ -36,7 +36,7 @@ let ws_ip_address = '127.0.0.1';
 
 /**************************************************/
 
-let foxConnected = false;
+let foxConnected = true;
 
 /*** WEB ***/
 let strDataReceved = '';
