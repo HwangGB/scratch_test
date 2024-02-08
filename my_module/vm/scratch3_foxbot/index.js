@@ -389,6 +389,7 @@ class Scratch3FoxBotExtension {
         if (args['IP_ADDR']) {
             ws_ip_address = args['IP_ADDR'];
             connected = false;
+            connection_pending = false;
             
             if (!connected) {
                 if (!connection_pending) {
