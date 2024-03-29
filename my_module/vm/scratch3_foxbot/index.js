@@ -314,6 +314,41 @@ class Scratch3FoxBotExtension {
                         }
                     }
                 },
+                {
+                    opcode: 'moveForward',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: 'move forward'
+                    })
+                },
+                {
+                    opcode: 'moveBackward',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: 'move backward'
+                    })
+                },
+                {
+                    opcode: 'stopMove',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: 'stop move'
+                    })
+                },
+                {
+                    opcode: 'turnLeft',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: 'turn left'
+                    })
+                },
+                {
+                    opcode: 'turnRight',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: 'turn right'
+                    })
+                },
                 // {
                 //     opcode: 'ConnectFoxBot_Web',                    
                 //     blockType: BlockType.COMMAND,
@@ -421,6 +456,36 @@ class Scratch3FoxBotExtension {
         
         strDataSend = '';
         strDataSend = args.MSG;
+        this._peripheral.send('ble',strDataSend);
+    }
+
+    moveForward () 
+    {
+        strDataSend = 'f';
+        this._peripheral.send('ble',strDataSend);
+    }
+
+    moveBackward () 
+    {
+        strDataSend = 'b';
+        this._peripheral.send('ble',strDataSend);
+    }
+
+    stopMove () 
+    {
+        strDataSend = 's';
+        this._peripheral.send('ble',strDataSend);
+    }
+
+    turnLeft () 
+    {
+        strDataSend = 'l';
+        this._peripheral.send('ble',strDataSend);
+    }
+
+    turnRight () 
+    {
+        strDataSend = 'r';
         this._peripheral.send('ble',strDataSend);
     }
 
