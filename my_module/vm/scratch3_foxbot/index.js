@@ -53,6 +53,11 @@ const BLEUUID = {
     txChar: '018dc082-cddb-7bc5-b08f-8761c95e0509'
 };
 
+// class BLEWorker{
+    
+// }
+
+
 class FoxBot {
 
     /**
@@ -188,7 +193,7 @@ class FoxBot {
     }
     
     /* Send a message to the peripheral BLE socket. */
-    send (command, message) {
+    send (message) {
         if (!this.isConnected()) return;
         if (this._busy) return;
 
@@ -456,37 +461,37 @@ class Scratch3FoxBotExtension {
         
         strDataSend = '';
         strDataSend = args.MSG;
-        this._peripheral.send('ble',strDataSend);
+        this._peripheral.send(strDataSend);
     }
 
     moveForward () 
     {
         strDataSend = 'f';
-        this._peripheral.send('ble',strDataSend);
+        this._peripheral.send(strDataSend);
     }
 
     moveBackward () 
     {
         strDataSend = 'b';
-        this._peripheral.send('ble',strDataSend);
+        this._peripheral.send(strDataSend);
     }
 
     stopMove () 
     {
         strDataSend = 's';
-        this._peripheral.send('ble',strDataSend);
+        this._peripheral.send(strDataSend);
     }
 
     turnLeft () 
     {
         strDataSend = 'l';
-        this._peripheral.send('ble',strDataSend);
+        this._peripheral.send(strDataSend);
     }
 
     turnRight () 
     {
         strDataSend = 'r';
-        this._peripheral.send('ble',strDataSend);
+        this._peripheral.send(strDataSend);
     }
 
     // ConnectFoxBot_Web ()
@@ -500,17 +505,17 @@ class Scratch3FoxBotExtension {
     // }
 
     ChangeFace (args) {
-        strDataSend = 'eye both '+args.MODE+ ' 1';
+        strDataSend = 'eye '+args.MODE+ ' 1';
         //this._peripheral.ws_sendData (strDataSend);
         //window.socketr.send(strDataSend);
-        this._peripheral.send('ble',strDataSend);
+        this._peripheral.send(strDataSend);
     }
 
     ChangeMotorAngle (args) {
         strDataSend = 'motor an '+args.ID+' '+args.VAL;
         //this._peripheral.ws_sendData (strDataSend);
         //window.socketr.send(strDataSend);
-        this._peripheral.send('ble',strDataSend);
+        this._peripheral.send(strDataSend);
     }
 
     // getLastMessageReceived () {
