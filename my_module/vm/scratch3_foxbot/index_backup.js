@@ -53,6 +53,11 @@ const BLEUUID = {
     txChar: '018dc082-cddb-7bc5-b08f-8761c95e0509'
 };
 
+// class BLEWorker{
+    
+// }
+
+
 class FoxBot {
 
     /**
@@ -188,7 +193,7 @@ class FoxBot {
     }
     
     /* Send a message to the peripheral BLE socket. */
-    send (command, message) {
+    send (message) {
         if (!this.isConnected()) return;
         if (this._busy) return;
 
@@ -318,66 +323,74 @@ class Scratch3FoxBotExtension {
                     opcode: 'moveForward',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: 'move forward'
-                    })
+                        default: '앞으로 [SEC]초 이동하기'
+                    }),
+                    arguments: {
+                        SEC: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '1'
+                        }
+                    }
                 },
                 {
                     opcode: 'moveBackward',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: 'move backward'
-                    })
+                        default: '뒤로 [SEC]초 이동하기'
+                    }),
+                    arguments: {
+                        SEC: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '1'
+                        }
+                    }
                 },
                 {
                     opcode: 'stopMove',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: 'stop move'
+                        default: '정지하기'
                     })
                 },
                 {
                     opcode: 'turnLeft',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: 'turn left'
-                    })
+                        default: '왼쪽으로 [SEC]초 회전하기'
+                    }),
+                    arguments: {
+                        SEC: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '1'
+                        }
+                    }
                 },
                 {
                     opcode: 'turnRight',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: 'turn right'
-                    })
+                        default: '오른쪽으로 [SEC]초 회전하기'
+                    }),
+                    arguments: {
+                        SEC: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '1'
+                        }
+                    }
                 },
                 // {
-                //     opcode: 'ConnectFoxBot_Web',                    
-                //     blockType: BlockType.COMMAND,
+                //     opcode: 'getConnected',
+                //     blockType: BlockType.REPORTER,
                 //     text: formatMessage({
-                //         default: 'Connect Foxbot - web',
-                //         description: 'Connect Foxbot via websocket'
+                //         default: 'Connection state'
                 //     })
                 // },
-                // {
-                //     opcode: 'ConnectFoxBot_BLE',                    
-                //     blockType: BlockType.COMMAND,
-                //     text: formatMessage({
-                //         default: 'Connect Foxbot - ble',
-                //         description: 'Connect Foxbot via bluetooth'
-                //     })
-                // },
-                {
-                    opcode: 'getConnected',
-                    blockType: BlockType.REPORTER,
-                    text: formatMessage({
-                        default: 'Connection state'
-                    })
-                },
                 '---',
                 {
                     opcode: 'ChangeFace',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: 'Change Foxbot Face : [MODE]',
+                        default: '감정 표현 : [MODE]',
                         description: 'Change Foxbot Face'
                     }),
                     arguments: {
@@ -456,37 +469,37 @@ class Scratch3FoxBotExtension {
         
         strDataSend = '';
         strDataSend = args.MSG;
-        this._peripheral.send('ble',strDataSend);
+        this._peripheral.send(strDataSend);
     }
 
-    moveForward () 
+    moveForward (args) 
     {
-        strDataSend = 'f';
-        this._peripheral.send('ble',strDataSend);
+        strDataSend = 'f '+args.SEC;
+        this._peripheral.send(strDataSend);
     }
 
-    moveBackward () 
+    moveBackward (args) 
     {
-        strDataSend = 'b';
-        this._peripheral.send('ble',strDataSend);
+        strDataSend = 'b '+args.SEC;
+        this._peripheral.send(strDataSend);
     }
 
     stopMove () 
     {
-        strDataSend = 's';
-        this._peripheral.send('ble',strDataSend);
+        strDataSend = 's ';
+        this._peripheral.send(strDataSend);
     }
 
-    turnLeft () 
+    turnLeft (args) 
     {
-        strDataSend = 'l';
-        this._peripheral.send('ble',strDataSend);
+        strDataSend = 'l '+args.SEC;
+        this._peripheral.send(strDataSend);
     }
 
-    turnRight () 
+    turnRight (args) 
     {
-        strDataSend = 'r';
-        this._peripheral.send('ble',strDataSend);
+        strDataSend = 'r '+args.SEC;
+        this._peripheral.send(strDataSend);
     }
 
     // ConnectFoxBot_Web ()
@@ -503,14 +516,14 @@ class Scratch3FoxBotExtension {
         strDataSend = 'eye '+args.MODE+ ' 1';
         //this._peripheral.ws_sendData (strDataSend);
         //window.socketr.send(strDataSend);
-        this._peripheral.send('ble',strDataSend);
+        this._peripheral.send(strDataSend);
     }
 
     ChangeMotorAngle (args) {
         strDataSend = 'motor an '+args.ID+' '+args.VAL;
         //this._peripheral.ws_sendData (strDataSend);
         //window.socketr.send(strDataSend);
-        this._peripheral.send('ble',strDataSend);
+        this._peripheral.send(strDataSend);
     }
 
     // getLastMessageReceived () {

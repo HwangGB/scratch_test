@@ -387,6 +387,20 @@ class Scratch3FoxBotExtension {
                 // },
                 '---',
                 {
+                    opcode: 'PlaySound',                    
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: '소리 내기 : [MODE] 효과음 재생',
+                        description: 'Play Sound'
+                    }),
+                    arguments: {
+                        MODE: {
+                            type: ArgumentType.STRING,
+                            defaultValue: 'happy'
+                        }
+                    }
+                },
+                {
                     opcode: 'ChangeFace',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
@@ -404,7 +418,7 @@ class Scratch3FoxBotExtension {
                     opcode: 'ChangeMotorAngle',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: 'Change Motor Angle : Motor id [ID], angle [VAL]',
+                        default: '모터 제어 : [ID]번 모터를 [VAL]도 움직이기',
                         description: 'Change Motor Angle'
                     }),
                     arguments: {
@@ -511,6 +525,14 @@ class Scratch3FoxBotExtension {
     // {
     //     //this._peripheral.ws_ConnectBot();
     // }
+
+    PlaySound (args) {
+        // code here
+        strDataSend = 'sound '+args.MODE;
+        //this._peripheral.ws_sendData (strDataSend);
+        //window.socketr.send(strDataSend);
+        this._peripheral.send(strDataSend);
+    }
 
     ChangeFace (args) {
         strDataSend = 'eye '+args.MODE+ ' 1';
