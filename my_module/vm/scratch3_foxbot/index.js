@@ -390,13 +390,31 @@ class Scratch3FoxBotExtension {
                     opcode: 'PlaySound',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '소리 내기 : [MODE] 효과음 재생',
+                        default: '소리 내기 : [FILE] 파일 재생',
                         description: 'Play Sound'
                     }),
                     arguments: {
-                        MODE: {
+                        FILE: {
                             type: ArgumentType.STRING,
                             defaultValue: 'happy'
+                        }
+                    }
+                },
+                {
+                    opcode: 'RecordSound',                    
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: '소리 녹음 : [SEC]초 동안 녹음하여 [FILE].wav로 저장',
+                        description: 'Record Sound'
+                    }),
+                    arguments: {
+                        SEC: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '5'
+                        },
+                        FILE: {
+                            type: ArgumentType.STRING,
+                            defaultValue: 'output'
                         }
                     }
                 },
@@ -525,10 +543,18 @@ class Scratch3FoxBotExtension {
     // {
     //     //this._peripheral.ws_ConnectBot();
     // }
-
+    
     PlaySound (args) {
         // code here
-        strDataSend = 'sound '+args.MODE;
+        strDataSend = 'sound '+args.FILE;
+        //this._peripheral.ws_sendData (strDataSend);
+        //window.socketr.send(strDataSend);
+        this._peripheral.send(strDataSend);
+    }
+
+    RecordSound (args) {
+        // code here
+        strDataSend = 'record '+args.FILE+' '+args.SEC;
         //this._peripheral.ws_sendData (strDataSend);
         //window.socketr.send(strDataSend);
         this._peripheral.send(strDataSend);
