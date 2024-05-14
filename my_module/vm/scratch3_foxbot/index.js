@@ -390,7 +390,7 @@ class Scratch3FoxBotExtension {
                     opcode: 'PlaySound',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '소리 내기 : [FILE] 파일 재생',
+                        default: '소리 재생 : [FILE] 효과음',
                         description: 'Play Sound'
                     }),
                     arguments: {
@@ -448,8 +448,8 @@ class Scratch3FoxBotExtension {
                     arguments: {
                         ID: {
                             type: ArgumentType.STRING,
-                            defaultValue: '1',
-                            "menu": "MotorIDMenu"
+                            defaultValue: '1'//,
+                            //"menu": "MotorIDMenu"
                         },
                         VAL: {
                             type: ArgumentType.STRING,
@@ -469,7 +469,7 @@ class Scratch3FoxBotExtension {
             "menus": {
                 "PlaySoundMenu": [{text:"happy",value:"happy"}, {text:"sad",value:"sad"}, {text:"anger",value:"anger"}, {text:"test",value:"test"}],
                 "ChangeFaceMenu": [{text:"blink",value:"blink"}, {text:"happy",value:"happy"}, {text:"sad",value:"sad"}, {text:"anger",value:"anger"}],
-                "MotorIDMenu": [{text:"1",value:"1"},{text:"2",value:"2"}],
+                //"MotorIDMenu": [{text:"1",value:"1"},{text:"2",value:"2"}],
             }  
         };
     }
