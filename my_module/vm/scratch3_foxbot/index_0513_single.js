@@ -44,210 +44,217 @@ let strDataSend = '';
 let startTime = Date.now();
 
 /*** BLE ***/
-const BLETimeout = 2500;
+const BLETimeout = 4500;
 const BLESendInterval = 100;
 const BLEDataStoppedError = 'foxbot extension stopped receiving data';
 const BLEUUID = {
-    service: 0xf005,
-    rxChar: '5261da01-fa7e-42ab-850b-7c80220097cc',
-    txChar: '5261da02-fa7e-42ab-850b-7c80220097cc'
+    service: '018dc080-cddb-7bc5-b08f-8761c95e0509',
+    rxChar: '018dc081-cddb-7bc5-b08f-8761c95e0509',
+    txChar: '018dc082-cddb-7bc5-b08f-8761c95e0509'
 };
 
-// class FoxBot {
-
-//     /**
-//      * Construct a EduBoyt communication object.
-//      * @param {Runtime} runtime - the Scratch 3.0 runtime
-//      * @param {string} extensionId - the id of the extension
-//      */
-
-//     constructor (runtime, extensionId) {
-
-//         this._runtime = runtime;
-//         this._runtime.registerPeripheralExtension(extensionId, this);
-//         this._extensionId = extensionId;        
-//         this._timeoutID = null;
-
-
-//         /*** WEB ***/
-//         this.ws = new WebSocket(FoxLink);
-//         this.ws.binaryType = 'string'; //'arraybuffer';
-        
-//         this.ws.onopen = this.ws_openSocket;
-//         this.ws.onclose = this.ws_closeSocket;
-//         this.ws.onerror = this.ws_errorSocket;
-//         this.ws.onmessage = this.ws_getData;
-
-//         this.ws_sendData = this.ws_sendData.bind(this);
-//         this.ws_getData = this.ws_getData.bind(this);
-//         this.ws_openSocket = this.ws_openSocket.bind(this);
-//         this.ws_closeSocket = this.ws_closeSocket.bind(this);
-//         this.ws_errorSocket = this.ws_errorSocket.bind(this);
-        
-//         /*** BLE ***/
-//         this._ble = null;
-
-//         /* A flag that is true while we are busy sending data to the BLE socket. */
-//         this._busy = false;
-//         /* ID for a timeout which is used to clear the busy flag if it has been true for a long time. */
-//         this._busyTimeoutID = null;
-        
-//         //this.disconnect = this.disconnect.bind(this);
-//         this.reset = this.reset.bind(this);
-//         this._onConnect = this._onConnect.bind(this);
-//         this._onMessage = this._onMessage.bind(this);
-//     }
-
-//     /*** WEB ***/
-//     ws_ConnectBot() {
-//         this.ws=new WebSocket(FoxLink);
-//         this.ws.binaryType = 'string';
-
-//         this.ws.onopen = this.ws_openSocket;
-//         this.ws.onclose = this.ws_closeSocket;
-//         this.ws.onerror = this.ws_errorSocket;
-//         this.ws.onmessage = this.ws_getData;    
-//     }
-
-//     ws_isConnected () {
-//         let connected = false;
-//         if (this.ws.readyState === WebSocket.OPEN) {
-//             connected = true;
-//         }
-//         return connected;
-//     }
-
-//     ws_openSocket () {
-//         //  console.log('WebSocket connection: ', this.ws.readyState);
-//         console.log('WebSocket connection Opened');
-// 		ws.send("WebSocket connection Opened");
-//     }
-
-//     ws_closeSocket () {
-//         console.log('WebSocket connection Closed!');
-//     }
-
-//     ws_errorSocket (err) {
-//         console.log(err);
-//         this.ws.close();
-//     }
-
-//     ws_sendData (msg) {
-//        this.ws.send(msg);
-//     }
-
-//     /* get called whenever there is new Data from the ws server. */
-//     ws_getData (msg) {
-//         strDataReceved = '';
-//         strDataReceved = msg.data;            
-//         return strDataReceved;
-//     }
-
-
-//     /*** BLE ***/
-//     scan () {
-//         if (this._ble) {
-//             this._ble.disconnect();
-//         }
-//         this._ble = new BLE(this._runtime, this._extensionId, {
-//             filters: [
-//                 {services: [BLEUUID.service]}
-//             ]
-//         }, this._onConnect, this.reset);
-//     }
-
-//     /* Called by the runtime when user wants to connect to a certain peripheral.*/    
-//     connect (id) {
-//         if (this._ble) {
-//             this._ble.connectPeripheral(id);
-//         }
-//     }
-
-//     disconnect () {
-//         //window.clearInterval(this._timeoutID);
-//         if (this._ble) {
-//             this._ble.disconnect();
-//         }
-
-//         this.reset();
-//     }
-
-//     reset () {
-//         if (this._timeoutID) {
-//             window.clearTimeout(this._timeoutID);
-//             this._timeoutID = null;
-//         }
-//     }
+// class BLEWorker{
     
-//     isConnected () {
-//         let connected = false;
-//         if (this._ble) {
-//             connected = this._ble.isConnected();
-//         }
-//         return connected;
-//     }
-    
-//     _onConnect () {
-//         this._ble.read(BLEUUID.service, BLEUUID.rxChar, true, this._onMessage);
-//         this._timeoutID = window.setTimeout(
-//             () => this._ble.handleDisconnectError(BLEDataStoppedError),
-//             BLETimeout
-//         );
-//     }
-
-//      /* Process the sensor data from the incoming BLE characteristic.*/
-//     _onMessage(base64) {
-//         const data = Base64Util.base64ToUint8Array(base64);
-
-//         // this._sensors.tiltX = data[1] | (data[0] << 8);
-//         // if (this._sensors.tiltX > (1 << 15)) this._sensors.tiltX -= (1 << 16);
-//         // this._sensors.tiltY = data[3] | (data[2] << 8);
-//         // if (this._sensors.tiltY > (1 << 15)) this._sensors.tiltY -= (1 << 16);
-
-//         // this._sensors.buttonA = data[4];
-//         // this._sensors.buttonB = data[5];
-
-//         // cancel disconnect timeout and start a new one
-//         window.clearInterval(this._timeoutID);
-//         this._timeoutID = window.setInterval(
-//             () => this._ble.handleDisconnectError(BLEDataStoppedError),
-//             BLETimeout
-//         );
-//     }
-
-//     /* Send a message to the peripheral BLE socket. */
-//     send (command, message) {
-//         if (!this.isConnected()) return;
-//         if (this._busy) return;
-
-//         // Set a busy flag so that while we are sending a message and waiting for
-//         // the response, additional messages are ignored.
-//         this._busy = true;
-
-//         // Set a timeout after which to reset the busy flag. This is used in case
-//         // a BLE message was sent for which we never received a response, because
-//         // e.g. the peripheral was turned off after the message was sent. We reset
-//         // the busy flag after a while so that it is possible to try again later.
-//         this._busyTimeoutID = window.setTimeout(() => {
-//             this._busy = false;
-//         }, 5000);
-
-//         const output = new Uint8Array(message.length + 1);
-//         output[0] = command; // attach command to beginning of message
-//         for (let i = 0; i < message.length; i++) {
-//             output[i + 1] = message[i];
-//         }
-//         const data = Base64Util.uint8ArrayToBase64(output);
-
-//         this._ble.write(BLEUUID.service, BLEUUID.txChar, data, 'base64', true).then(
-//             () => {
-//                 this._busy = false;
-//                 window.clearTimeout(this._busyTimeoutID);
-//             }
-//         );
-//     }
-
 // }
+
+
+class FoxBot {
+
+    /**
+     * Construct a EduBoyt communication object.
+     * @param {Runtime} runtime - the Scratch 3.0 runtime
+     * @param {string} extensionId - the id of the extension
+     */
+
+    constructor (runtime, extensionId) {
+
+        this._runtime = runtime;
+        this._runtime.registerPeripheralExtension(extensionId, this);
+        this._extensionId = extensionId;        
+        this._timeoutID = null;
+
+
+        // /*** WEB ***/
+        // this.ws = new WebSocket(FoxLink);
+        // this.ws.binaryType = 'string'; //'arraybuffer';
+        
+        // this.ws.onopen = this.ws_openSocket;
+        // this.ws.onclose = this.ws_closeSocket;
+        // this.ws.onerror = this.ws_errorSocket;
+        // this.ws.onmessage = this.ws_getData;
+
+        // this.ws_sendData = this.ws_sendData.bind(this);
+        // this.ws_getData = this.ws_getData.bind(this);
+        // this.ws_openSocket = this.ws_openSocket.bind(this);
+        // this.ws_closeSocket = this.ws_closeSocket.bind(this);
+        // this.ws_errorSocket = this.ws_errorSocket.bind(this);
+        
+        /*** BLE ***/
+        this._ble = null;
+        /* A flag that is true while we are busy sending data to the BLE socket. */
+        this._busy = false;
+        /* ID for a timeout which is used to clear the busy flag if it has been true for a long time. */
+        this._busyTimeoutID = null;
+        
+        //this.disconnect = this.disconnect.bind(this);
+        this.reset = this.reset.bind(this);
+        this._onConnect = this._onConnect.bind(this);
+        this._onMessage = this._onMessage.bind(this);
+    }
+
+    // /*** WEB ***/
+    // ws_ConnectBot() {
+    //     this.ws=new WebSocket(FoxLink);
+    //     this.ws.binaryType = 'string';
+
+    //     this.ws.onopen = this.ws_openSocket;
+    //     this.ws.onclose = this.ws_closeSocket;
+    //     this.ws.onerror = this.ws_errorSocket;
+    //     this.ws.onmessage = this.ws_getData;    
+    // }
+
+    // ws_isConnected () {
+    //     let connected = false;
+    //     if (this.ws.readyState === WebSocket.OPEN) {
+    //         connected = true;
+    //     }
+    //     return connected;
+    // }
+
+    // ws_openSocket () {
+    //     //  console.log('WebSocket connection: ', this.ws.readyState);
+    //     console.log('WebSocket connection Opened');
+	// 	ws.send("WebSocket connection Opened");
+    // }
+
+    // ws_closeSocket () {
+    //     console.log('WebSocket connection Closed!');
+    // }
+
+    // ws_errorSocket (err) {
+    //     console.log(err);
+    //     this.ws.close();
+    // }
+
+    // ws_sendData (msg) {
+    //    this.ws.send(msg);
+    // }
+
+    // /* get called whenever there is new Data from the ws server. */
+    // ws_getData (msg) {
+    //     strDataReceved = '';
+    //     strDataReceved = msg.data;            
+    //     return strDataReceved;
+    // }
+
+
+    /*** BLE ***/
+    scan () {
+        if (this._ble) {
+            this._ble.disconnect();
+        }
+        this._ble = new BLE(this._runtime, this._extensionId, {
+            filters: [
+                //{name : "foxbot" }, 
+                {services: [BLEUUID.service]}
+            ]
+        }, this._onConnect, this.disconnect);
+    }
+
+    /* Called by the runtime when user wants to connect to a certain peripheral.*/    
+    connect (id) {
+        if (this._ble) {
+            this._ble.connectPeripheral(id);
+        }
+    }
+
+    disconnect () {
+        //window.clearInterval(this._timeoutID);
+        if (this._ble) {
+            this._ble.disconnect();
+        }
+
+        this.reset();
+    }
+
+    reset () {
+        if (this._timeoutID) {
+            window.clearTimeout(this._timeoutID);
+            this._timeoutID = null;
+        }
+    }
+    
+    isConnected () {
+        let connected = false;
+        if (this._ble) {
+            connected = this._ble.isConnected();
+        }
+        return connected;
+    }
+    
+    /* Send a message to the peripheral BLE socket. */
+    send (message) {
+        if (!this.isConnected()) return;
+        if (this._busy) return;
+
+        // Set a busy flag so that while we are sending a message and waiting for
+        // the response, additional messages are ignored.
+        this._busy = true;
+
+        // Set a timeout after which to reset the busy flag. This is used in case
+        // a BLE message was sent for which we never received a response, because
+        // e.g. the peripheral was turned off after the message was sent. We reset
+        // the busy flag after a while so that it is possible to try again later.
+        this._busyTimeoutID = window.setTimeout(() => {
+            this._busy = false;
+        }, 5000);
+
+        // const output = new Uint8Array(message.length);
+        // for (let i = 0; i < message.length; i++) {
+        //     output[i] = message[i];
+        // }
+        // const data = Base64Util.uint8ArrayToBase64(output);
+        
+        var output = new TextEncoder().encode(message)
+        const data = Base64Util.uint8ArrayToBase64(output);
+
+        this._ble.write(BLEUUID.service, BLEUUID.txChar, data, 'base64', true).then(
+            () => {
+                this._busy = false;
+                window.clearTimeout(this._busyTimeoutID);
+            }
+        );
+    }
+    
+    /* Starts reading data from peripheral after BLE has connected to it. */
+    _onConnect () {
+        // this._ble.read(BLEUUID.service, BLEUUID.rxChar, true, this._onMessage);
+        // this._timeoutID = window.setTimeout(
+        //     () => this._ble.handleDisconnectError(BLEDataStoppedError),
+        //     BLETimeout
+        // );
+    }
+
+     /* Process the sensor data from the incoming BLE characteristic.*/
+    _onMessage(base64) {
+        const data = Base64Util.base64ToUint8Array(base64);
+
+        // this._sensors.tiltX = data[1] | (data[0] << 8);
+        // if (this._sensors.tiltX > (1 << 15)) this._sensors.tiltX -= (1 << 16);
+        // this._sensors.tiltY = data[3] | (data[2] << 8);
+        // if (this._sensors.tiltY > (1 << 15)) this._sensors.tiltY -= (1 << 16);
+
+        // this._sensors.buttonA = data[4];
+        // this._sensors.buttonB = data[5];
+
+        // // cancel disconnect timeout and start a new one
+        // window.clearInterval(this._timeoutID);
+        // this._timeoutID = window.setInterval(
+        //     () => this._ble.handleDisconnectError(BLEDataStoppedError),
+        //     BLETimeout
+        // );
+    }
+}
 
 class Scratch3FoxBotExtension {
     
@@ -261,7 +268,7 @@ class Scratch3FoxBotExtension {
 
     constructor (runtime) {
         this.runtime = runtime;
-        //this._peripheral = new FoxBot(this.runtime, Scratch3FoxBotExtension.EXTENSION_ID);
+        this._peripheral = new FoxBot(this.runtime, Scratch3FoxBotExtension.EXTENSION_ID);
         //startTime = Date.now();
     }
     
@@ -312,35 +319,110 @@ class Scratch3FoxBotExtension {
                         }
                     }
                 },
-                // {
-                //     opcode: 'ConnectFoxBot_Web',                    
-                //     blockType: BlockType.COMMAND,
-                //     text: formatMessage({
-                //         default: 'Connect Foxbot - web',
-                //         description: 'Connect Foxbot via websocket'
-                //     })
-                // },
-                // {
-                //     opcode: 'ConnectFoxBot_BLE',                    
-                //     blockType: BlockType.COMMAND,
-                //     text: formatMessage({
-                //         default: 'Connect Foxbot - ble',
-                //         description: 'Connect Foxbot via bluetooth'
-                //     })
-                // },
                 {
-                    opcode: 'getConnected',
-                    blockType: BlockType.REPORTER,
+                    opcode: 'moveForward',
+                    blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: 'Connection state'
+                        default: '앞으로 [SEC]초 이동하기'
+                    }),
+                    arguments: {
+                        SEC: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '1'
+                        }
+                    }
+                },
+                {
+                    opcode: 'moveBackward',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: '뒤로 [SEC]초 이동하기'
+                    }),
+                    arguments: {
+                        SEC: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '1'
+                        }
+                    }
+                },
+                {
+                    opcode: 'stopMove',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: '정지하기'
                     })
                 },
+                {
+                    opcode: 'turnLeft',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: '왼쪽으로 [SEC]초 회전하기'
+                    }),
+                    arguments: {
+                        SEC: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '1'
+                        }
+                    }
+                },
+                {
+                    opcode: 'turnRight',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: '오른쪽으로 [SEC]초 회전하기'
+                    }),
+                    arguments: {
+                        SEC: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '1'
+                        }
+                    }
+                },
+                // {
+                //     opcode: 'getConnected',
+                //     blockType: BlockType.REPORTER,
+                //     text: formatMessage({
+                //         default: 'Connection state'
+                //     })
+                // },
                 '---',
+                {
+                    opcode: 'PlaySound',                    
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: '소리 내기 : [FILE] 파일 재생',
+                        description: 'Play Sound'
+                    }),
+                    arguments: {
+                        FILE: {
+                            type: ArgumentType.STRING,
+                            defaultValue: 'happy'
+                        }
+                    }
+                },
+                {
+                    opcode: 'RecordSound',                    
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: '소리 녹음 : [SEC]초 동안 녹음하여 [FILE].wav로 저장',
+                        description: 'Record Sound'
+                    }),
+                    arguments: {
+                        SEC: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '5'
+                        },
+                        FILE: {
+                            type: ArgumentType.STRING,
+                            defaultValue: 'output'
+                        }
+                    }
+                },
                 {
                     opcode: 'ChangeFace',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: 'Change Foxbot Face : [MODE]',
+                        default: '감정 표현 : [MODE]',
                         description: 'Change Foxbot Face'
                     }),
                     arguments: {
@@ -354,7 +436,7 @@ class Scratch3FoxBotExtension {
                     opcode: 'ChangeMotorAngle',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: 'Change Motor Angle : Motor id [ID], angle [VAL]',
+                        default: '모터 제어 : [ID]번 모터를 [VAL]도 움직이기',
                         description: 'Change Motor Angle'
                     }),
                     arguments: {
@@ -401,21 +483,55 @@ class Scratch3FoxBotExtension {
     }
 
     sendMessage (args) {
-        if (!connected) {
-            if (!connection_pending) {
-                this.connect();
-                connection_pending = true;
-            }
+        // if (!connected) {
+        //     if (!connection_pending) {
+        //         this.connect();
+        //         connection_pending = true;
+        //     }
 
-        }
-        if (!connected) {
-            //let callbackEntry = [this.digital_write.bind(this), args];
-            //wait_open.push(callbackEntry);
-        } else {
-            strDataSend = '';
-            strDataSend = args.MSG;
-            window.socketr.send(strDataSend);
-        }
+        // }
+        // if (!connected) {
+        //     //let callbackEntry = [this.digital_write.bind(this), args];
+        //     //wait_open.push(callbackEntry);
+        // } else {
+        //     strDataSend = '';
+        //     strDataSend = args.MSG;
+        //     window.socketr.send(strDataSend);
+        // }
+        
+        strDataSend = '';
+        strDataSend = args.MSG;
+        this._peripheral.send(strDataSend);
+    }
+
+    moveForward (args) 
+    {
+        strDataSend = 'f '+args.SEC;
+        this._peripheral.send(strDataSend);
+    }
+
+    moveBackward (args) 
+    {
+        strDataSend = 'b '+args.SEC;
+        this._peripheral.send(strDataSend);
+    }
+
+    stopMove () 
+    {
+        strDataSend = 's ';
+        this._peripheral.send(strDataSend);
+    }
+
+    turnLeft (args) 
+    {
+        strDataSend = 'l '+args.SEC;
+        this._peripheral.send(strDataSend);
+    }
+
+    turnRight (args) 
+    {
+        strDataSend = 'r '+args.SEC;
+        this._peripheral.send(strDataSend);
     }
 
     // ConnectFoxBot_Web ()
@@ -427,17 +543,35 @@ class Scratch3FoxBotExtension {
     // {
     //     //this._peripheral.ws_ConnectBot();
     // }
+    
+    PlaySound (args) {
+        // code here
+        strDataSend = 'sound '+args.FILE;
+        //this._peripheral.ws_sendData (strDataSend);
+        //window.socketr.send(strDataSend);
+        this._peripheral.send(strDataSend);
+    }
+
+    RecordSound (args) {
+        // code here
+        strDataSend = 'record '+args.FILE+' '+args.SEC;
+        //this._peripheral.ws_sendData (strDataSend);
+        //window.socketr.send(strDataSend);
+        this._peripheral.send(strDataSend);
+    }
 
     ChangeFace (args) {
-        strDataSend = 'eye both '+args.MODE+ ' 1';
+        strDataSend = 'eye '+args.MODE+ ' 1';
         //this._peripheral.ws_sendData (strDataSend);
-        window.socketr.send(strDataSend);
+        //window.socketr.send(strDataSend);
+        this._peripheral.send(strDataSend);
     }
 
     ChangeMotorAngle (args) {
         strDataSend = 'motor an '+args.ID+' '+args.VAL;
         //this._peripheral.ws_sendData (strDataSend);
-        window.socketr.send(strDataSend);
+        //window.socketr.send(strDataSend);
+        this._peripheral.send(strDataSend);
     }
 
     // getLastMessageReceived () {

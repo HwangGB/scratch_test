@@ -6,6 +6,11 @@ import foxbotInsetIconURL from './foxbot/foxbot-small.svg';
 import foxbotConnectionIconURL from './foxbot/foxbot-illustration.svg';
 import foxbotConnectionSmallIconURL from './foxbot/foxbot-small.svg';
 
+import foxbotCarIconURL from './foxbotCar/foxbotCar.png';
+import foxbotCarInsetIconURL from './foxbotCar/foxbotCar-small.svg';
+import foxbotCarConnectionIconURL from './foxbotCar/foxbotCar-illustration.svg';
+import foxbotCarConnectionSmallIconURL from './foxbotCar/foxbotCar-small.svg';
+
 import musicIconURL from './music/music.png';
 import musicInsetIconURL from './music/music-small.svg';
 
@@ -78,6 +83,34 @@ export default [
                 defaultMessage="Connecting"
                 description="Message to help people connect to their foxbot."
                 id="gui.extension.foxbot.connectingMessage"
+            />
+        ),
+    },
+    {
+        name: 'FoxbotCar',
+        extensionId: 'foxbotCar',
+        collaborator: 'KAIST NMAIL',
+        iconURL: foxbotCarIconURL,
+        insetIconURL: foxbotCarInsetIconURL,
+        description: (
+            <FormattedMessage
+                defaultMessage="Play with FoxbotCar"
+                description="Description for the 'FoxbotCar' extension"
+                id="gui.extension.foxbotCar.description"
+            />
+        ),
+        featured: true,
+        disabled: false,
+        bluetoothRequired: true,
+        launchPeripheralConnectionFlow: true,
+        useAutoScan: false,
+        connectionIconURL: foxbotCarConnectionIconURL,
+        connectionSmallIconURL: foxbotCarConnectionSmallIconURL,
+        connectingMessage: (
+            <FormattedMessage
+                defaultMessage="Connecting"
+                description="Message to help people connect to their foxbotCar."
+                id="gui.extension.foxbotCar.connectingMessage"
             />
         ),
     },

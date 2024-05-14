@@ -396,7 +396,8 @@ class Scratch3FoxBotExtension {
                     arguments: {
                         FILE: {
                             type: ArgumentType.STRING,
-                            defaultValue: 'happy'
+                            defaultValue: 'happy',
+                            "menu": "PlaySoundMenu"
                         }
                     }
                 },
@@ -404,19 +405,23 @@ class Scratch3FoxBotExtension {
                     opcode: 'RecordSound',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '소리 녹음 : [SEC]초 동안 녹음하여 [FILE].wav로 저장',
+                        default: '소리 녹음 : [SEC]초 동안 녹음하기',
                         description: 'Record Sound'
                     }),
                     arguments: {
                         SEC: {
                             type: ArgumentType.STRING,
                             defaultValue: '5'
-                        },
-                        FILE: {
-                            type: ArgumentType.STRING,
-                            defaultValue: 'output'
                         }
                     }
+                },
+                {
+                    opcode: 'RecordSoundPlay',                    
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: '소리 녹음 : 녹음된 소리 재생하기',
+                        description: 'Play Recorded Sound'
+                    })
                 },
                 {
                     opcode: 'ChangeFace',                    
@@ -428,7 +433,8 @@ class Scratch3FoxBotExtension {
                     arguments: {
                         MODE: {
                             type: ArgumentType.STRING,
-                            defaultValue: 'blink'
+                            defaultValue: 'blink',
+                            "menu": "ChangeFaceMenu"
                         }
                     }
                 },
@@ -442,7 +448,8 @@ class Scratch3FoxBotExtension {
                     arguments: {
                         ID: {
                             type: ArgumentType.STRING,
-                            defaultValue: '1'
+                            defaultValue: '1',
+                            "menu": "MotorIDMenu"
                         },
                         VAL: {
                             type: ArgumentType.STRING,
@@ -458,7 +465,12 @@ class Scratch3FoxBotExtension {
                 //         // default: 'get last incoming message: [MESSAGE]',
                 //     })
                 // }           
-            ]
+            ],
+            "menus": {
+                "PlaySoundMenu": [{text:"happy",value:"happy"}, {text:"sad",value:"sad"}, {text:"anger",value:"anger"}, {text:"test",value:"test"}],
+                "ChangeFaceMenu": [{text:"blink",value:"blink"}, {text:"happy",value:"happy"}, {text:"sad",value:"sad"}, {text:"anger",value:"anger"}],
+                "MotorIDMenu": [{text:"1",value:"1"},{text:"2",value:"2"}],
+            }  
         };
     }
 
@@ -554,11 +566,20 @@ class Scratch3FoxBotExtension {
 
     RecordSound (args) {
         // code here
-        strDataSend = 'record '+args.FILE+' '+args.SEC;
+        strDataSend = 'record '+'output'+' '+args.SEC;
         //this._peripheral.ws_sendData (strDataSend);
         //window.socketr.send(strDataSend);
         this._peripheral.send(strDataSend);
     }
+
+    RecordSoundPlay (args) {
+        // code here
+        strDataSend = 'sound '+'output';
+        //this._peripheral.ws_sendData (strDataSend);
+        //window.socketr.send(strDataSend);
+        this._peripheral.send(strDataSend);
+    }
+
 
     ChangeFace (args) {
         strDataSend = 'eye '+args.MODE+ ' 1';

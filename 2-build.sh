@@ -11,6 +11,7 @@ fi
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $SCRATCH_SRC_HOME/scratch-vm/src/extensions
 cp -f $DIR/my_module/vm/scratch3_foxbot/index.js scratch3_foxbot/index.js
+cp -f $DIR/my_module/vm/scratch3_foxbotCar/index.js scratch3_foxbotCar/index.js
 #####
 
 echo "BUILDING SCRATCH VM ..."
