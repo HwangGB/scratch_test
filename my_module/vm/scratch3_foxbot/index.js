@@ -442,18 +442,18 @@ class Scratch3FoxBotExtension {
                     opcode: 'ChangeMotorAngle',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '모터 제어 : [ID]번 모터를 [VAL]도 움직이기',
+                        default: '모터 제어 : [ID]번 모터를 [VAL]도 위치로 움직이기',
                         description: 'Change Motor Angle'
                     }),
                     arguments: {
                         ID: {
                             type: ArgumentType.STRING,
-                            defaultValue: '1'//,
-                            //"menu": "MotorIDMenu"
+                            defaultValue: '1',
+                            "menu": "MotorIDMenu"
                         },
                         VAL: {
                             type: ArgumentType.STRING,
-                            defaultValue: '0'
+                            defaultValue: '180'
                         }
                     }
                 },
@@ -469,7 +469,7 @@ class Scratch3FoxBotExtension {
             "menus": {
                 "PlaySoundMenu": [{text:"happy",value:"happy"}, {text:"sad",value:"sad"}, {text:"anger",value:"anger"}, {text:"test",value:"test"}],
                 "ChangeFaceMenu": [{text:"blink",value:"blink"}, {text:"happy",value:"happy"}, {text:"sad",value:"sad"}, {text:"anger",value:"anger"}],
-                //"MotorIDMenu": [{text:"1",value:"1"},{text:"2",value:"2"}],
+                "MotorIDMenu": [{text:"1",value:"1"},{text:"2",value:"2"}],
             }  
         };
     }
