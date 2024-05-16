@@ -240,7 +240,6 @@ const FoxbotCarPSDSensorDirection = {
     BACK: '뒤쪽'
 };
 
-
 class Scratch3FoxBotCarExtension {
     
     static get EXTENSION_NAME () {
