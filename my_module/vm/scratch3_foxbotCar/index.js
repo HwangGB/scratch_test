@@ -16,13 +16,13 @@ let strDataSend = '';
 let startTime = Date.now();
 
 /*** BLE ***/
-const BLETimeout = 4500;
+const BLETimeout = 3000;
 const BLESendInterval = 100;
 const BLEDataStoppedError = 'FoxBotCar extension stopped receiving data';
 const BLEUUID = {
     service: '018dc080-cddb-7bc5-b08f-8761c95e0510',
-    rxChar: '018dc081-cddb-7bc5-b08f-8761c95e0510',
-    txChar: '018dc082-cddb-7bc5-b08f-8761c95e0510'
+    char_motor_set: '018dc081-cddb-7bc5-b08f-8761c95e0510',
+    char_sensor_all: '018dc082-cddb-7bc5-b08f-8761c95e0510'
 };
 
 class FoxBotCar {
@@ -51,16 +51,73 @@ class FoxBotCar {
         this.reset = this.reset.bind(this);
         this._onConnect = this._onConnect.bind(this);
         this._onMessage = this._onMessage.bind(this);
+
+        this._ir_sensors = {
+            IR_FL: 0,
+            IR_FM: 0,
+            IR_FR: 0,
+            IR_BL: 0,
+            IR_BM: 0,
+            IR_BR: 0
+        }
+
+        this._PSD_sensor = {
+            front: 0,
+            back: 0
+        }
     }
 
-    /*** BLE ***/
+    // set motor data
+    setMotor(str) {
+        let send_data = str;
+        return this.send(BLEUUID.service, BLEUUID.char_motor_set, send_data);
+    }
+
+    // get IR sensor data
+    get IR_FrontLeft() {
+        return this._ir_sensors.IR_FL;
+    }
+    get IR_FrontMiddle() {
+        return this._ir_sensors.IR_FM;
+    }
+    get IR_FrontRight() {
+        return this._ir_sensors.IR_FR;
+    }
+    get IR_BackLeft() {
+        return this._ir_sensors.IR_BL;
+    }
+    get IR_BackMiddle() {
+        return this._ir_sensors.IR_BM;
+    }
+    get IR_BackRight() {
+        return this._ir_sensors.IR_BR;
+    }
+
+    //get PSD sensor data
+    get PSD_Front() {
+        let value = '센서 범위 밖'
+        if (this._PSD_sensor.front != 1000)
+        {
+            value = parseFloat(this._PSD_sensor.front/10.0)
+        } 
+        return value;
+    }
+    get PSD_Back() {
+        let value = '센서 범위 밖'
+        if (this._PSD_sensor.back != 1000)
+        {
+            value = parseFloat(this._PSD_sensor.back/10.0)
+        }        
+        return value;
+    }
+
+    /*************** BLE ***************/
     scan () {
         if (this._ble) {
             this._ble.disconnect();
         }
         this._ble = new BLE(this._runtime, this._extensionId, {
             filters: [
-                //{name : "FoxBotCar" }, 
                 {services: [BLEUUID.service]}
             ]
         }, this._onConnect, this.disconnect);
@@ -88,7 +145,7 @@ class FoxBotCar {
             this._timeoutID = null;
         }
     }
-    
+        
     isConnected () {
         let connected = false;
         if (this._ble) {
@@ -96,9 +153,46 @@ class FoxBotCar {
         }
         return connected;
     }
-    
+
+     /* Starts reading data from peripheral after BLE has connected to it. */
+     _onConnect () {
+        this._ble.read(BLEUUID.service, BLEUUID.char_sensor_all, true, this._onMessage);
+        this._timeoutID = window.setTimeout(
+            () => this._ble.handleDisconnectError(BLEDataStoppedError),
+            BLETimeout
+        );
+
+        // this._ble.startNotifications(
+        //     BLEUUID.service,
+        //     BLEUUID.char_sensor_all,
+        //     this._onMessage
+        // );
+    }
+
+     /* Process the sensor data from the incoming BLE characteristic.*/
+    _onMessage(base64) {
+        const data = Base64Util.base64ToUint8Array(base64);
+
+        this._ir_sensors.IR_FL = data[0];
+        this._ir_sensors.IR_FM = data[1];
+        this._ir_sensors.IR_FR = data[2];
+        this._ir_sensors.IR_BL = data[3];
+        this._ir_sensors.IR_BM = data[4];
+        this._ir_sensors.IR_BR = data[5];
+
+        this._PSD_sensor.front = (data[7] << 8) + data[6];
+        this._PSD_sensor.back = (data[9] << 8) + data[8];
+
+        // cancel disconnect timeout and start a new one
+        window.clearTimeout(this._timeoutID);
+        this._timeoutID = window.setTimeout(
+            () => this._ble.handleDisconnectError(BLEDataStoppedError),
+            BLETimeout
+        );
+    }
+
     /* Send a message to the peripheral BLE socket. */
-    send (message) {
+    send (service, characteristic, message) {
         if (!this.isConnected()) return;
         if (this._busy) return;
 
@@ -120,46 +214,32 @@ class FoxBotCar {
         // }
         // const data = Base64Util.uint8ArrayToBase64(output);
         
-        var output = new TextEncoder().encode(message)
+        let output = new TextEncoder().encode(message)
         const data = Base64Util.uint8ArrayToBase64(output);
 
-        this._ble.write(BLEUUID.service, BLEUUID.txChar, data, 'base64', true).then(
+        this._ble.write(service, characteristic, data, 'base64', false).then(
             () => {
                 this._busy = false;
                 window.clearTimeout(this._busyTimeoutID);
             }
         );
     }
-    
-    /* Starts reading data from peripheral after BLE has connected to it. */
-    _onConnect () {
-        // this._ble.read(BLEUUID.service, BLEUUID.rxChar, true, this._onMessage);
-        // this._timeoutID = window.setTimeout(
-        //     () => this._ble.handleDisconnectError(BLEDataStoppedError),
-        //     BLETimeout
-        // );
-    }
-
-     /* Process the sensor data from the incoming BLE characteristic.*/
-    _onMessage(base64) {
-        const data = Base64Util.base64ToUint8Array(base64);
-
-        // this._sensors.tiltX = data[1] | (data[0] << 8);
-        // if (this._sensors.tiltX > (1 << 15)) this._sensors.tiltX -= (1 << 16);
-        // this._sensors.tiltY = data[3] | (data[2] << 8);
-        // if (this._sensors.tiltY > (1 << 15)) this._sensors.tiltY -= (1 << 16);
-
-        // this._sensors.buttonA = data[4];
-        // this._sensors.buttonB = data[5];
-
-        // // cancel disconnect timeout and start a new one
-        // window.clearInterval(this._timeoutID);
-        // this._timeoutID = window.setInterval(
-        //     () => this._ble.handleDisconnectError(BLEDataStoppedError),
-        //     BLETimeout
-        // );
-    }
 }
+
+const FoxbotCarIRSensorDirection = {
+    FL: '앞-왼쪽',
+    FM: '앞-가운데',
+    FR: '앞-오른쪽',
+    BL: '뒤-왼쪽',
+    BM: '뒤-가운데',
+    BR: '뒤-오른쪽'
+};
+
+const FoxbotCarPSDSensorDirection = {
+    FRONT: '앞쪽',
+    BACK: '뒤쪽'
+};
+
 
 class Scratch3FoxBotCarExtension {
     
@@ -195,14 +275,43 @@ class Scratch3FoxBotCarExtension {
             // your Scratch blocks
             blocks: [
                 {
+                    opcode: 'getIRSensors',
+                    text: formatMessage({
+                        default: '센서값 : IR센서 [IR_DIRECTION]'
+                    }),
+                    blockType: BlockType.REPORTER,
+                    arguments: {
+                        IR_DIRECTION: {
+                            type: ArgumentType.STRING,
+                            menu: 'IR_DIRECTION',
+                            defaultValue: FoxbotCarIRSensorDirection.FM
+                        }
+                    }
+                },
+                {
+                    opcode: 'getPSDSensors',
+                    text: formatMessage({
+                        default: '센서값 : PSD센서 [PSD_DIRECTION]'
+                    }),
+                    blockType: BlockType.REPORTER,
+                    arguments: {
+                        PSD_DIRECTION: {
+                            type: ArgumentType.STRING,
+                            menu: 'PSD_DIRECTION',
+                            defaultValue: FoxbotCarPSDSensorDirection.FRONT
+                        }
+                    }
+                },
+                '---',
+                {
                     opcode: 'moveForward',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '앞으로 [SEC]초 이동하기'
+                        default: '모터제어 : 앞으로 [SEC]초 이동하기'
                     }),
                     arguments: {
                         SEC: {
-                            type: ArgumentType.STRING,
+                            type: ArgumentType.NUMBER,
                             defaultValue: '1'
                         }
                     }
@@ -211,11 +320,11 @@ class Scratch3FoxBotCarExtension {
                     opcode: 'moveBackward',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '뒤로 [SEC]초 이동하기'
+                        default: '모터제어 : 뒤로 [SEC]초 이동하기'
                     }),
                     arguments: {
                         SEC: {
-                            type: ArgumentType.STRING,
+                            type: ArgumentType.NUMBER,
                             defaultValue: '1'
                         }
                     }
@@ -224,18 +333,18 @@ class Scratch3FoxBotCarExtension {
                     opcode: 'stopMove',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '정지하기'
+                        default: '모터제어 : 정지하기'
                     })
                 },
                 {
                     opcode: 'turnLeft',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '왼쪽으로 [SEC]초 회전하기'
+                        default: '모터제어 : 왼쪽으로 [SEC]초 회전하기'
                     }),
                     arguments: {
                         SEC: {
-                            type: ArgumentType.STRING,
+                            type: ArgumentType.NUMBER,
                             defaultValue: '1'
                         }
                     }
@@ -244,16 +353,30 @@ class Scratch3FoxBotCarExtension {
                     opcode: 'turnRight',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '오른쪽으로 [SEC]초 회전하기'
+                        default: '모터제어 : 오른쪽으로 [SEC]초 회전하기'
                     }),
                     arguments: {
                         SEC: {
-                            type: ArgumentType.STRING,
+                            type: ArgumentType.NUMBER,
                             defaultValue: '1'
                         }
                     }
                 },           
-            ]
+            ],
+            "menus": {
+                "IR_DIRECTION": [
+                    {text:FoxbotCarIRSensorDirection.FL,value:FoxbotCarIRSensorDirection.FL},
+                    {text:FoxbotCarIRSensorDirection.FM,value:FoxbotCarIRSensorDirection.FM},
+                    {text:FoxbotCarIRSensorDirection.FR,value:FoxbotCarIRSensorDirection.FR},
+                    {text:FoxbotCarIRSensorDirection.BL,value:FoxbotCarIRSensorDirection.BL},
+                    {text:FoxbotCarIRSensorDirection.BM,value:FoxbotCarIRSensorDirection.BM},
+                    {text:FoxbotCarIRSensorDirection.BR,value:FoxbotCarIRSensorDirection.BR},
+                ],
+                "PSD_DIRECTION": [
+                    {text:FoxbotCarPSDSensorDirection.FRONT,value:FoxbotCarPSDSensorDirection.FRONT},
+                    {text:FoxbotCarPSDSensorDirection.BACK,value:FoxbotCarPSDSensorDirection.BACK},
+                ]
+            }  
         };
     }
 
@@ -261,34 +384,73 @@ class Scratch3FoxBotCarExtension {
      * implementation of the block with the opcode that matches this name
      *  this will be called when the block is used
      */
+    getIRSensors (args)
+    {
+        return this._getIRSensors(args.IR_DIRECTION);
+    }
+
+    _getIRSensors (dir)
+    {
+        switch (dir) {
+            case FoxbotCarIRSensorDirection.FL:
+                return this._peripheral.IR_FrontLeft;
+            case FoxbotCarIRSensorDirection.FM:
+                return this._peripheral.IR_FrontMiddle;
+            case FoxbotCarIRSensorDirection.FR:
+                return this._peripheral.IR_FrontRight;
+            case FoxbotCarIRSensorDirection.BL:
+                return this._peripheral.IR_BackLeft;
+            case FoxbotCarIRSensorDirection.BM:
+                return this._peripheral.IR_BackMiddle;
+            case FoxbotCarIRSensorDirection.BR:
+                return this._peripheral.IR_BackRight;
+            }
+    }
+
+    getPSDSensors (args)
+    {
+        return this._getPSDSensors(args.PSD_DIRECTION);
+    }
+
+    _getPSDSensors (dir)
+    {
+        switch (dir) {
+            case FoxbotCarPSDSensorDirection.FRONT:
+                return this._peripheral.PSD_Front;
+            case FoxbotCarPSDSensorDirection.BACK:
+                return this._peripheral.PSD_Back;
+            }
+    }
+
+
     moveForward (args) 
     {
-        strDataSend = 'f '+args.SEC;
-        this._peripheral.send(strDataSend);
+        strDataSend = 'f '+(args.SEC*1000).toString();
+        this._peripheral.setMotor(strDataSend);
     }
 
     moveBackward (args) 
     {
-        strDataSend = 'b '+args.SEC;
-        this._peripheral.send(strDataSend);
+        strDataSend = 'b '+(args.SEC*1000).toString();
+        this._peripheral.setMotor(strDataSend);
     }
 
     stopMove () 
     {
         strDataSend = 's ';
-        this._peripheral.send(strDataSend);
+        this._peripheral.setMotor(strDataSend);
     }
 
     turnLeft (args) 
     {
-        strDataSend = 'l '+args.SEC;
-        this._peripheral.send(strDataSend);
+        strDataSend = 'l '+(args.SEC*1000).toString();
+        this._peripheral.setMotor(strDataSend);
     }
 
     turnRight (args) 
     {
-        strDataSend = 'r '+args.SEC;
-        this._peripheral.send(strDataSend);
+        strDataSend = 'r '+(args.SEC*1000).toString();
+        this._peripheral.setMotor(strDataSend);
     }
 }
 

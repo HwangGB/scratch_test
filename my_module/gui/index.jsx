@@ -102,7 +102,6 @@ export default [
         featured: true,
         disabled: false,
         bluetoothRequired: true,
-        launchPeripheralConnectionFlow: true,
         useAutoScan: false,
         connectionIconURL: foxbotCarConnectionIconURL,
         connectionSmallIconURL: foxbotCarConnectionSmallIconURL,

@@ -288,103 +288,58 @@ class Scratch3FoxBotExtension {
             showStatusButton: true,
 
             // your Scratch blocks
-            blocks: [       
+            blocks: [
                 {
-                    opcode: 'ip_address',
-                    blockType: BlockType.COMMAND,
-                    //text: FormIPBlockR[the_locale],
-                    text: formatMessage({
-                        default: 'ip_address [IP_ADDR]',
-                        description: 'connect bot'
-                    }),
-                    arguments: {
-                        IP_ADDR: {
-                            type: ArgumentType.NUMBER,
-                            defaultValue: '',
-                        },
-                    }
-
-                },
-                {
-                    opcode: 'sendMessage',                    
+                    opcode: 'ChangeFace',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: 'send Message [MSG]',
-                        description: 'send string message'
+                        default: '감정 표현 : [MODE]',
+                        description: 'Change Foxbot Face'
                     }),
                     arguments: {
-                        MSG: {
+                        MODE: {
                             type: ArgumentType.STRING,
-                            defaultValue: 'Hi!'
+                            defaultValue: 'blink',
+                            "menu": "ChangeFaceMenu"
                         }
                     }
                 },
+                '---',
                 {
-                    opcode: 'moveForward',
+                    opcode: 'MotorOn',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '앞으로 [SEC]초 이동하기'
-                    }),
-                    arguments: {
-                        SEC: {
-                            type: ArgumentType.STRING,
-                            defaultValue: '1'
-                        }
-                    }
-                },
-                {
-                    opcode: 'moveBackward',
-                    blockType: BlockType.COMMAND,
-                    text: formatMessage({
-                        default: '뒤로 [SEC]초 이동하기'
-                    }),
-                    arguments: {
-                        SEC: {
-                            type: ArgumentType.STRING,
-                            defaultValue: '1'
-                        }
-                    }
-                },
-                {
-                    opcode: 'stopMove',
-                    blockType: BlockType.COMMAND,
-                    text: formatMessage({
-                        default: '정지하기'
+                        default: '모터 제어 : 모터 연결하기',
+                        description: 'Motor On'
                     })
                 },
                 {
-                    opcode: 'turnLeft',
+                    opcode: 'MotorOrigin',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '왼쪽으로 [SEC]초 회전하기'
-                    }),
-                    arguments: {
-                        SEC: {
-                            type: ArgumentType.STRING,
-                            defaultValue: '1'
-                        }
-                    }
+                        default: '모터 제어 : 정면 바라보기',
+                        description: 'Motor Origin'
+                    })
                 },
                 {
-                    opcode: 'turnRight',
+                    opcode: 'ChangeMotorAngle',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '오른쪽으로 [SEC]초 회전하기'
+                        default: '모터 제어 : [ID]번 모터를 [VAL]도 위치로 움직이기',
+                        description: 'Change Motor Angle'
                     }),
                     arguments: {
-                        SEC: {
+                        ID: {
                             type: ArgumentType.STRING,
-                            defaultValue: '1'
+                            defaultValue: '1',
+                            "menu": "MotorIDMenu"
+                        },
+                        VAL: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '180'
                         }
                     }
                 },
-                // {
-                //     opcode: 'getConnected',
-                //     blockType: BlockType.REPORTER,
-                //     text: formatMessage({
-                //         default: 'Connection state'
-                //     })
-                // },
                 '---',
                 {
                     opcode: 'PlaySound',                    
@@ -398,6 +353,20 @@ class Scratch3FoxBotExtension {
                             type: ArgumentType.STRING,
                             defaultValue: 'happy',
                             "menu": "PlaySoundMenu"
+                        }
+                    }
+                },
+                {
+                    opcode: 'SoundVolume',                    
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: '소리 크기 : 원래 소리 + [VOL]dB',
+                        description: 'Sound Volume'
+                    }),
+                    arguments: {
+                        VOL: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '0'
                         }
                     }
                 },
@@ -422,53 +391,11 @@ class Scratch3FoxBotExtension {
                         default: '소리 녹음 : 녹음된 소리 재생하기',
                         description: 'Play Recorded Sound'
                     })
-                },
-                {
-                    opcode: 'ChangeFace',                    
-                    blockType: BlockType.COMMAND,
-                    text: formatMessage({
-                        default: '감정 표현 : [MODE]',
-                        description: 'Change Foxbot Face'
-                    }),
-                    arguments: {
-                        MODE: {
-                            type: ArgumentType.STRING,
-                            defaultValue: 'blink',
-                            "menu": "ChangeFaceMenu"
-                        }
-                    }
-                },
-                {
-                    opcode: 'ChangeMotorAngle',                    
-                    blockType: BlockType.COMMAND,
-                    text: formatMessage({
-                        default: '모터 제어 : [ID]번 모터를 [VAL]도 위치로 움직이기',
-                        description: 'Change Motor Angle'
-                    }),
-                    arguments: {
-                        ID: {
-                            type: ArgumentType.STRING,
-                            defaultValue: '1',
-                            "menu": "MotorIDMenu"
-                        },
-                        VAL: {
-                            type: ArgumentType.STRING,
-                            defaultValue: '180'
-                        }
-                    }
-                },
-                // {
-                //     opcode: 'getLastMessageReceived',
-                //     blockType: BlockType.REPORTER,
-                //     text: formatMessage({
-                //         default: 'last massage'
-                //         // default: 'get last incoming message: [MESSAGE]',
-                //     })
-                // }           
+                },        
             ],
             "menus": {
                 "PlaySoundMenu": [{text:"happy",value:"happy"}, {text:"sad",value:"sad"}, {text:"anger",value:"anger"}, {text:"test",value:"test"}],
-                "ChangeFaceMenu": [{text:"blink",value:"blink"}, {text:"happy",value:"happy"}, {text:"sad",value:"sad"}, {text:"anger",value:"anger"}],
+                "ChangeFaceMenu": [{text:"blink",value:"blink"}, {text:"happy",value:"happy"}, {text:"sad",value:"sad"}, {text:"anger",value:"anger"}, {text:"R-Fox",value:"RFox"}],
                 "MotorIDMenu": [{text:"1",value:"1"},{text:"2",value:"2"}],
             }  
         };
@@ -478,87 +405,44 @@ class Scratch3FoxBotExtension {
      * implementation of the block with the opcode that matches this name
      *  this will be called when the block is used
      */
-    
-    ip_address(args) {
-        if (args['IP_ADDR']) {
-            ws_ip_address = args['IP_ADDR'];
-            connected = false;
-            connection_pending = false;
-            
-            if (!connected) {
-                if (!connection_pending) {
-                    this.connect();
-                    connection_pending = true;
-                }
-            }
-        }
-    }
 
-    sendMessage (args) {
-        // if (!connected) {
-        //     if (!connection_pending) {
-        //         this.connect();
-        //         connection_pending = true;
-        //     }
-
-        // }
-        // if (!connected) {
-        //     //let callbackEntry = [this.digital_write.bind(this), args];
-        //     //wait_open.push(callbackEntry);
-        // } else {
-        //     strDataSend = '';
-        //     strDataSend = args.MSG;
-        //     window.socketr.send(strDataSend);
-        // }
-        
-        strDataSend = '';
-        strDataSend = args.MSG;
+    ChangeFace (args) {
+        strDataSend = 'eye '+args.MODE+ ' 1';
+        //this._peripheral.ws_sendData (strDataSend);
+        //window.socketr.send(strDataSend);
         this._peripheral.send(strDataSend);
     }
 
-    moveForward (args) 
+    MotorOn()
     {
-        strDataSend = 'f '+args.SEC;
+        strDataSend = 'motorOn'
         this._peripheral.send(strDataSend);
     }
 
-    moveBackward (args) 
+    MotorOrigin()
     {
-        strDataSend = 'b '+args.SEC;
+        strDataSend = 'motorOri'
         this._peripheral.send(strDataSend);
     }
 
-    stopMove () 
-    {
-        strDataSend = 's ';
+    ChangeMotorAngle (args) {
+        strDataSend = 'motor an '+args.ID+' '+args.VAL;
+        //this._peripheral.ws_sendData (strDataSend);
+        //window.socketr.send(strDataSend);
         this._peripheral.send(strDataSend);
     }
 
-    turnLeft (args) 
-    {
-        strDataSend = 'l '+args.SEC;
-        this._peripheral.send(strDataSend);
-    }
-
-    turnRight (args) 
-    {
-        strDataSend = 'r '+args.SEC;
-        this._peripheral.send(strDataSend);
-    }
-
-    // ConnectFoxBot_Web ()
-    // {
-    //     this._peripheral.ws_ConnectBot();
-    // }
-
-    // ConnectFoxBot_Ble ()
-    // {
-    //     //this._peripheral.ws_ConnectBot();
-    // }
-    
     PlaySound (args) {
         // code here
         strDataSend = 'sound '+args.FILE;
+        //this._peripheral.ws_sendData (strDataSend);
+        //window.socketr.send(strDataSend);
+        this._peripheral.send(strDataSend);
+    }
+
+    SoundVolume (args) {
+        // code here
+        strDataSend = 'volume '+args.VOL;
         //this._peripheral.ws_sendData (strDataSend);
         //window.socketr.send(strDataSend);
         this._peripheral.send(strDataSend);
@@ -579,93 +463,6 @@ class Scratch3FoxBotExtension {
         //window.socketr.send(strDataSend);
         this._peripheral.send(strDataSend);
     }
-
-
-    ChangeFace (args) {
-        strDataSend = 'eye '+args.MODE+ ' 1';
-        //this._peripheral.ws_sendData (strDataSend);
-        //window.socketr.send(strDataSend);
-        this._peripheral.send(strDataSend);
-    }
-
-    ChangeMotorAngle (args) {
-        strDataSend = 'motor an '+args.ID+' '+args.VAL;
-        //this._peripheral.ws_sendData (strDataSend);
-        //window.socketr.send(strDataSend);
-        this._peripheral.send(strDataSend);
-    }
-
-    // getLastMessageReceived () {
-    //     // refresh message
-    //     return strDataReceved;
-    // }
-
-    getConnected () {
-        return connected;
-    }
-
-    connect() {
-        if (connected) {
-            // ignore additional connection attempts
-            return;
-        } else {
-            connect_attempt = true;
-            let url = "ws://" + ws_ip_address + ":5500";
-            console.log(url);
-            //window.socketr = new WebSocket("ws://127.0.0.1:5500");
-            window.socketr = new WebSocket(url);
-            // msg = JSON.stringify({"id": "to_rpi_gateway"});
-            msg = 'scratch connected!';
-        }
-
-         // websocket event handlers
-         window.socketr.onopen = function () {
-            // connection complete
-            connected = true;
-            connect_attempt = true;
-            // the message is built above
-            try {
-                //ws.send(msg);
-                window.socketr.send(msg);
-
-            } catch (err) {
-                // ignore this exception
-            }
-            for (let index = 0; index < wait_open.length; index++) {
-                let data = wait_open[index];
-                data[0](data[1]);
-            }
-        };
-
-        window.socketr.onclose = function () {
-            if (alerted === false) {
-                alerted = true;
-                alert(FormWSClosed[the_locale]);}
-            connected = false;
-        };
-
-        // // reporter messages from the board
-        // window.socketr.onmessage = function (message) {
-        //     msg = JSON.parse(message.data);
-        //     let report_type = msg["report"];
-        //     let pin = null;
-        //     let value = null;
-
-        //     // types - digital, analog, sonar
-        //     if (report_type === 'digital_input') {
-        //         pin = msg['pin'];
-        //         pin = parseInt(pin, 10);
-        //         value = msg['value'];
-        //         digital_inputs[pin] = value;
-        //     } else if (report_type === 'analog_input') {
-        //         pin = msg['pin'];
-        //         pin = parseInt(pin, 10);
-        //         value = msg['value'];
-        //         analog_inputs[pin] = value;
-        //     }
-        // };
-    }
-
 }
 
 module.exports = Scratch3FoxBotExtension;
