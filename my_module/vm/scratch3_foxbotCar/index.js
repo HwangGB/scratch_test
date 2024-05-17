@@ -65,11 +65,13 @@ class FoxBotCar {
             front: 0,
             back: 0
         }
+
+        this.motor_vel = '100'
     }
 
     // set motor data
     setMotor(str) {
-        let send_data = str;
+        let send_data = str+' '+this.motor_vel;
         return this.send(BLEUUID.service, BLEUUID.char_motor_set, send_data);
     }
 
@@ -360,6 +362,19 @@ class Scratch3FoxBotCarExtension {
                             defaultValue: '1'
                         }
                     }
+                },
+                {
+                    opcode: 'motorVel',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: '모터제어 : 속도 [VEL]로 바꾸기 (0~255)'
+                    }),
+                    arguments: {
+                        VEL: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '100'
+                        }
+                    }
                 },           
             ],
             "menus": {
@@ -450,6 +465,11 @@ class Scratch3FoxBotCarExtension {
     {
         strDataSend = 'r '+(args.SEC*1000).toString();
         this._peripheral.setMotor(strDataSend);
+    }
+
+    motorVel (args)
+    {
+        this._peripheral.motor_vel = args.VEL
     }
 }
 
