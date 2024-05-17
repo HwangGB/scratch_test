@@ -456,13 +456,13 @@ class Scratch3FoxBotCarExtension {
 
     turnLeft (args) 
     {
-        strDataSend = 'l '+(args.SEC*1000).toString();
+        strDataSend = 'r '+(args.SEC*1000).toString();
         this._peripheral.setMotor(strDataSend);
     }
 
     turnRight (args) 
     {
-        strDataSend = 'r '+(args.SEC*1000).toString();
+        strDataSend = 'l '+(args.SEC*1000).toString();
         this._peripheral.setMotor(strDataSend);
     }
 
