@@ -436,7 +436,6 @@ class Scratch3FoxBotCarExtension {
             }
     }
 
-
     moveForward (args) 
     {
         strDataSend = 'f '+(args.SEC*1000).toString();
