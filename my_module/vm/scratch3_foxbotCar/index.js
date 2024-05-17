@@ -470,6 +470,7 @@ class Scratch3FoxBotCarExtension {
     {
         this._peripheral.motor_vel = args.VEL
     }
+    
 }
 
 module.exports = Scratch3FoxBotCarExtension;
