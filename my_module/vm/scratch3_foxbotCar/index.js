@@ -393,7 +393,7 @@ class Scratch3FoxBotCarExtension {
             }  
         };
     }
-
+    
     /**
      * implementation of the block with the opcode that matches this name
      *  this will be called when the block is used
@@ -456,13 +456,13 @@ class Scratch3FoxBotCarExtension {
 
     turnLeft (args) 
     {
-        strDataSend = 'r '+(args.SEC*1000).toString();
+        strDataSend = 'l '+(args.SEC*1000).toString();
         this._peripheral.setMotor(strDataSend);
     }
 
     turnRight (args) 
     {
-        strDataSend = 'l '+(args.SEC*1000).toString();
+        strDataSend = 'r '+(args.SEC*1000).toString();
         this._peripheral.setMotor(strDataSend);
     }
 
