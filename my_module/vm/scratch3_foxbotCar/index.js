@@ -113,7 +113,7 @@ class FoxBotCar {
         return value;
     }
 
-    /*************** BLE ***************/
+    /************ BLE ************/
     scan () {
         if (this._ble) {
             this._ble.disconnect();
