@@ -48,7 +48,7 @@ const BLESendInterval = 100;
 const BLEDataStoppedError = 'foxbot extension stopped receiving data';
 const BLEUUID = {
     service: '018dc080-cddb-7bc5-b08f-8761c95e0509',
-    rxChar: '018dc081-cddb-7bc5-b08f-8761c95e0509',
+    rxChar: '018dc082-cddb-7bc5-b08f-8761c95e0509',
     txChar: '018dc082-cddb-7bc5-b08f-8761c95e0509'
 };
 
@@ -95,8 +95,11 @@ class FoxBot {
         this._onConnect = this._onConnect.bind(this);
         this._onMessage = this._onMessage.bind(this);
 
-        this.motor_vel_1 = '180'
-        this.motor_vel_2 = '180'
+        this.motor_set_1 = '180'
+        this.motor_set_2 = '180'
+
+        this.motor_cur_1 = ''
+        this.motor_cur_2 = ''
     }
 
     // /*** WEB ***/
@@ -225,17 +228,31 @@ class FoxBot {
     
     /* Starts reading data from peripheral after BLE has connected to it. */
     _onConnect () {
-        // this._ble.read(BLEUUID.service, BLEUUID.rxChar, true, this._onMessage);
-        // this._timeoutID = window.setTimeout(
-        //     () => this._ble.handleDisconnectError(BLEDataStoppedError),
-        //     BLETimeout
-        // );
+        this._ble.startNotifications(
+            BLEUUID.service,
+            BLEUUID.rxChar,
+            this._onMessage
+        );
     }
 
      /* Process the sensor data from the incoming BLE characteristic.*/
     _onMessage(base64) {
-        const data = Base64Util.base64ToUint8Array(base64);
 
+        const pre_data = Base64Util.base64ToUint8Array(base64);
+        const data = new TextDecoder("utf-8").decode(pre_data);
+
+        if (data.startsWith("motor an ")) {
+            try {
+                let parts = data.split(" ");
+                let angle1 = parseFloat(parts[2]);
+                let angle2 = parseFloat(parts[3]);
+                this.motor_cur_1 = angle1.toString();
+                this.motor_cur_2 = angle2.toString();                
+            } catch (e) {
+                console.error(`Failed to parse angles: ${e}`);
+            }
+        }
+        
         // this._sensors.tiltX = data[1] | (data[0] << 8);
         // if (this._sensors.tiltX > (1 << 15)) this._sensors.tiltX -= (1 << 16);
         // this._sensors.tiltY = data[3] | (data[2] << 8);
@@ -345,6 +362,34 @@ class Scratch3FoxBotExtension {
                         description: 'Change Motor Angle'
                     })
                 },
+                {
+                    opcode: 'getSetMotorValue',
+                    text: formatMessage({
+                        default: '모터 값 : 설정된 [ID]번 모터 값'
+                    }),
+                    blockType: BlockType.REPORTER,
+                    arguments: {
+                        ID: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '1',
+                            "menu": "MotorIDMenu"
+                        }
+                    }
+                },
+                {
+                    opcode: 'getCurMotorValue',
+                    text: formatMessage({
+                        default: '모터 값 : 현재 [ID]번 모터 값'
+                    }),
+                    blockType: BlockType.REPORTER,
+                    arguments: {
+                        ID: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '1',
+                            "menu": "MotorIDMenu"
+                        }
+                    }
+                },
                 '---',
                 {
                     opcode: 'PlaySound',                    
@@ -447,6 +492,30 @@ class Scratch3FoxBotExtension {
         //this._peripheral.ws_sendData (strDataSend);
         //window.socketr.send(strDataSend);
         this._peripheral.send(strDataSend);
+    }
+
+    getSetMotorValue (args)
+    {
+        if (args.ID=='1')
+        {
+            return this._peripheral.motor_set_1;
+        }
+        else if (args.ID=='2')
+        {
+            return this._peripheral.motor_set_1;
+        }
+    }
+
+    getCurMotorValue (args)
+    {
+        if (args.ID=='1')
+        {
+            return this._peripheral.motor_cur_1;
+        }
+        else if (args.ID=='2')
+        {
+            return this._peripheral.motor_cur_2;
+        }
     }
 
     PlaySound (args) {
