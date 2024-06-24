@@ -52,6 +52,11 @@ const BLEUUID = {
     txChar: '018dc082-cddb-7bc5-b08f-8761c95e0509'
 };
 
+// class BLEWorker{
+    
+// }
+
+
 class FoxBot {
 
     /**
@@ -94,9 +99,6 @@ class FoxBot {
         this.reset = this.reset.bind(this);
         this._onConnect = this._onConnect.bind(this);
         this._onMessage = this._onMessage.bind(this);
-
-        this.motor_vel_1 = '180'
-        this.motor_vel_2 = '180'
     }
 
     // /*** WEB ***/
@@ -319,11 +321,11 @@ class Scratch3FoxBotExtension {
                     })
                 },
                 {
-                    opcode: 'SetMotorAngle',                    
+                    opcode: 'ChangeMotorAngle',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '모터 제어 : [ID]번 모터 값을 [VAL]도로 설정하기',
-                        description: 'Set Motor Angle'
+                        default: '모터 제어 : [ID]번 모터를 [VAL]도 위치로 움직이기',
+                        description: 'Change Motor Angle'
                     }),
                     arguments: {
                         ID: {
@@ -336,14 +338,6 @@ class Scratch3FoxBotExtension {
                             defaultValue: '180'
                         }
                     }
-                },
-                {
-                    opcode: 'ChangeMotorAngle',                    
-                    blockType: BlockType.COMMAND,
-                    text: formatMessage({
-                        default: '모터 제어 : 설정된 모터 값으로 모터 위치 움직이기',
-                        description: 'Change Motor Angle'
-                    })
                 },
                 '---',
                 {
@@ -430,20 +424,8 @@ class Scratch3FoxBotExtension {
         this._peripheral.send(strDataSend);
     }
 
-    SetMotorAngle (args) {
-
-        if (args.ID=='1')
-        {
-            this._peripheral.motor_vel_1 = args.VAL;
-        }
-        else if (args.ID=='2')
-        {
-            this._peripheral.motor_vel_2 = args.VAL;
-        }
-    }
-
     ChangeMotorAngle (args) {
-        strDataSend = 'motor an '+this._peripheral.motor_vel_1+' '+this._peripheral.motor_vel_2+' sp 50 50';
+        strDataSend = 'motor an '+args.ID+' '+args.VAL;
         //this._peripheral.ws_sendData (strDataSend);
         //window.socketr.send(strDataSend);
         this._peripheral.send(strDataSend);
