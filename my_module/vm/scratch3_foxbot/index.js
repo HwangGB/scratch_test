@@ -100,6 +100,10 @@ class FoxBot {
 
         this.motor_cur_1 = ''
         this.motor_cur_2 = ''
+
+        this.sensor_button = false
+        this.sensor_touch = false
+        this.sensor_impact = false
     }
 
     // /*** WEB ***/
@@ -252,7 +256,17 @@ class FoxBot {
                 console.error(`Failed to parse angles: ${e}`);
             }
         }
-        
+        else if(data.startsWith("sensors ")) {
+            try {
+                let parts = data.split(" ");
+                this.sensor_button = !!parseInt(parts[1]);
+                this.sensor_touch = !!parseInt(parts[2]);
+                this.sensor_impact = !!parseInt(parts[3]);
+            } catch (e) {
+                console.error(`Failed to parse sensor value: ${e}`);
+            }
+        }
+
         // this._sensors.tiltX = data[1] | (data[0] << 8);
         // if (this._sensors.tiltX > (1 << 15)) this._sensors.tiltX -= (1 << 16);
         // this._sensors.tiltY = data[3] | (data[2] << 8);
@@ -318,28 +332,12 @@ class Scratch3FoxBotExtension {
                         }
                     }
                 },
-                '---',
+                '---',                
                 {
-                    opcode: 'MotorOn',                    
+                    opcode: 'SetMotorAngle',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '모터 제어 : 모터 연결하기',
-                        description: 'Motor On'
-                    })
-                },
-                {
-                    opcode: 'MotorOrigin',                    
-                    blockType: BlockType.COMMAND,
-                    text: formatMessage({
-                        default: '모터 제어 : 정면 바라보기',
-                        description: 'Motor Origin'
-                    })
-                },
-                {
-                    opcode: 'SetMotorAngle',                    
-                    blockType: BlockType.COMMAND,
-                    text: formatMessage({
-                        default: '모터 제어 : [ID]번 모터 값을 [VAL]도로 설정하기',
+                        default: '모터 목표값 세팅 : [ID]번, [VAL]도',
                         description: 'Set Motor Angle'
                     }),
                     arguments: {
@@ -358,14 +356,22 @@ class Scratch3FoxBotExtension {
                     opcode: 'ChangeMotorAngle',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '모터 제어 : 설정된 모터 값으로 모터 위치 움직이기',
+                        default: '모터 움직이기 : 목표값',
                         description: 'Change Motor Angle'
+                    })
+                },
+                {
+                    opcode: 'MotorOrigin',                    
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: '모터 움직이기 : 정면',
+                        description: 'Motor Origin'
                     })
                 },
                 {
                     opcode: 'getSetMotorValue',
                     text: formatMessage({
-                        default: '모터 값 : 설정된 [ID]번 모터 값'
+                        default: '[ID]번 모터 목표값'
                     }),
                     blockType: BlockType.REPORTER,
                     arguments: {
@@ -379,7 +385,7 @@ class Scratch3FoxBotExtension {
                 {
                     opcode: 'getCurMotorValue',
                     text: formatMessage({
-                        default: '모터 값 : 현재 [ID]번 모터 값'
+                        default: '[ID]번 모터 현재값'
                     }),
                     blockType: BlockType.REPORTER,
                     arguments: {
@@ -389,6 +395,27 @@ class Scratch3FoxBotExtension {
                             "menu": "MotorIDMenu"
                         }
                     }
+                },
+                {
+                    opcode: 'getCurbutton',
+                    blockType: BlockType.REPORTER,
+                    text: formatMessage({
+                        default: '센서값 : 버튼 눌림 감지됨?'
+                    })
+                },
+                {
+                    opcode: 'getCurtouch',
+                    blockType: BlockType.REPORTER,
+                    text: formatMessage({
+                        default: '센서 : 터치 감지됨?'
+                    })
+                },
+                {
+                    opcode: 'getCurimpact',
+                    blockType: BlockType.REPORTER,
+                    text: formatMessage({
+                        default: '센서 : 충격 감지됨?'
+                    })
                 },
                 '---',
                 {
@@ -463,12 +490,6 @@ class Scratch3FoxBotExtension {
         this._peripheral.send(strDataSend);
     }
 
-    MotorOn()
-    {
-        strDataSend = 'motorOn'
-        this._peripheral.send(strDataSend);
-    }
-
     MotorOrigin()
     {
         strDataSend = 'motorOri'
@@ -516,6 +537,21 @@ class Scratch3FoxBotExtension {
         {
             return this._peripheral.motor_cur_2;
         }
+    }
+
+    getCurbutton ()
+    {
+        return this._peripheral.sensor_button;
+    }
+
+    getCurtouch ()
+    {
+        return this._peripheral.sensor_touch;
+    }
+
+    getCurimpact ()
+    {
+        return this._peripheral.sensor_impact;
     }
 
     PlaySound (args) {

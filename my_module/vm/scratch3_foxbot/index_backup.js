@@ -12,7 +12,6 @@ const FoxLink = 'ws://localhost:5500';
 const blockIconURI = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC0AAAAZCAMAAACSL1cTAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAIcUExURTeO5jaN5jWN5jaO5lih4o6/22ys3ziO5jmP5lGc40OV5DiP5kCT5USV5LTU1v//zNfp0Veg4j6S5TuQ5Uya426t39jp0aHK2E2a43iy3sHc1KTM2Pb6zf3+zNLm0qLK2L3a1JjF2UGT5TqQ5Z/I2Nzs0Onyz/f7zdvr0czi01Wf4sfg0///y+v0z1+k4bDS1vj7zdnq0enzz+rzz1mh4TSM5q3R1/X6zfv8zUuZ42+t393s0KDJ2EqZ5Gur3+Pv0Pn8zZ/J2cPd1O/2zp/J2G+u34m829zr0Ofxz1+l4T2R5bTV1fT5zTCK58bf0+jyz1ag4q7R1pzH2XGv3v7+zMvi012j4dLl0rHT1lyj4YG43PX5zYq925XD2vP4zmiq4EeX5NTn0uv0zjSN5ney3uLv0P7/zH213TOM5laf4uLu0PD3zp3H2XGv346/2sDc1Nbo0ez0zrbV1U+c42On4N3r0GWo4EKU5VKd4vz+zIS63DyR5U+b43y13Ye72+Twz+Hu0IO53HOw3r/b1Ie73D+S5azQ193s0fz9zDKL5/v9zfr8zYC43D+T5TuQ5sLd1PD2zq/S1vH3zqXM2N7t0O31zt7s0O71zs3j0lGd4+Xxz6jO163Q10WW5Gep4FCc42qq39Xn0Xiz3qLL2KfN2Hax3nq03T2S5ZHB2uz0zzqQ5vf6zX+33VOe4oa73JLB2pDB2nmz3Xiz3f///8xM7TQAAAABYktHRLPabf9+AAAACXBIWXMAADK/AAAyvwF6t4D2AAAAB3RJTUUH6AEWBAojIVAjmAAAAdRJREFUOMtjYBikgJGJCVWAiRmXUmYGJhZWNnYGZoReDk4uJkasirl5GHj5+AUEmYWEoep5RUTFxCVEOLAplpSSlpLhl5WTV1BUAitXVlFV41fX0NRiwnQGl7YOPxTo6oHkmTn0dQwMjfiNTUwxzeYwA6qTNbcAkmKWILdyW1nL2tja2Ts48mJ4lYnLiZ/f2cXVzZ2f38MTaBqzlze/D5uvkJ+Ovye6U5gDAoFuDuIwNQ125g8JDQb5LCycPyIySjc6RgjdbKZYoAvi4k0ZGBMS+fl1/ID+ZGKI0AlJMtdRE0zGiJaU1DR+g/QMRtPMLH7+7BxhU4bc4Lz8Av5Cp6JizBDnKCnl5w8vK6/Qr+T3qaquqa2rb4hpbGpuaeXBFpHcbUC3+Ie2d/DzG1p2NkZ38fN3+/T09jFii3tmnn5YcPMbRTKxyk4InDipw40RezphFpqcPWUqUKnMtOkzZjbN4p8tXD2Hv8GVCatqBsa58+YvWKiT3VJcosW0SI1/MQP3En61pThUMzAmM5kum2GznAmYajlWyBo7iq/sYOVgwANWcS0H06ZVBrLAdLB6jSk+1QxQXzGuXbdezWNDy0xGBmIAIxP3xk3cTMQpBmsgXik1AAD6SlnCT+hhZgAAADF0RVh0Q29tbWVudABQTkcgcmVzaXplZCB3aXRoIGh0dHBzOi8vZXpnaWYuY29tL3Jlc2l6ZV5J2+IAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjQtMDEtMjJUMDQ6MDY6NTgrMDA6MDBi65rcAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDI0LTAxLTIyVDA0OjA2OjU4KzAwOjAwE7YiYAAAACh0RVh0ZGF0ZTp0aW1lc3RhbXAAMjAyNC0wMS0yMlQwNDoxMDozNSswMDowMC+LxH8AAAASdEVYdFNvZnR3YXJlAGV6Z2lmLmNvbaDDs1gAAAAASUVORK5CYII='
 const menuIconURI = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAtCAMAAADm86mrAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAALTUExURTeO5jaN5jWN5jaO5jOM5kqZ5IK43X223UmY5ECT5VCb4z+T5DSM5jeP5j+T5TiP5jiO5pDA2vD2zvD3zoW63DyR5TmQ5j2R5TuQ5UaW5FOe4o/A29Xn0Yq920eX5EmY4zSN5mip4LbV1qrQ17XV1ujyz/7/zP//zOXwz7DS1rLU1q/S1lui4brY1OTwz9nq0bbW1kiY5DWO5jiP5azR1/f6zP3+zKHK2UGT5TGL52Cl4dPm0f//y+72ztrr0c/k0kqY4zKL5pPC2vH3zvf7zfj7zf7+zPL4zou920iX5JjF2fP5zefxz4C33Ii72+z1z4u+26jO1/b6zfn8zbjX1Xiz3niz3b3a1Pv8zJ/J2TOL5mep39jp0czj0lGd4yuH6Fyj4dzr0NLl0kya45zH2OrzzrvZ1S+J51Kd4sHc1J3I2VCc44e73Oz0z+71zpvH2eTvz3ey3TCK54G43I6/25zH2fX5zYK43DOM51+k4f//yuz1zvn8zM7j0zKM5mep4NHl0vv9zKHJ2EOV5ECS5azQ1/v8zfz+zMvh02ip3zGK5k+b43Sx3nmz3Z/J2Mnh0+Pvz+Luz8Db1KPL10SW5DWM5lSf4sbe04S53ESV5Iq82+Pwz7zZ1Veg4j6S5WSn4H+23K3R1sLd1Hu03Yi827nX1XOv3zqP5jCL55LB2tHm0tTn0vL3zvP5zoy+27zZ1P3+zfz9zNPn0Wap36fN2J7J2TqQ5cjg09Tm0abN18bf093s0Gqq3+Tw0Ofyz+bwz+nyz4a73KvQ1+Hu0Hax3S6J58Lc1Fih4jGL5mKm4FSe4rbV1ff7zK/S116k4Vmh4U6b47LT1t7t0HCv3yqH6Fuj4s3i08rg012j4WGm4F6l4TKL512k4crh05fE2rvY1fv9zd/t0G+t30GU5ECT5DmP5r7b1GGm4UGT5Gys3/P3zsng04m923ey3lKe4jKM5wAAALVIE5gAAADxdFJOU////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////wCpCmekAAAACXBIWXMAADLAAAAywAEoZFrbAAAC30lEQVRIS5VVu43jMBB1tpGauIQFqAOHa0CAIjWwBBgQULyON1LMGtSAHGwPzoQFFKgBlXHvvSFlGXeBd0wOh/N5HM5I8mn9FZ3W6jd0qqo1rS+OCugkbF7hdE/avsIL+hcZlaTt//xLMUIfMNKwDcO6YX3m1GcRRPRhSJjgw0ZZuydOK8WCbvAAoZq7+sCzFYvQzQXAQDFIyln8Fx0SmA1MnUFcgzGejYYOoxB2OxMU8oOZGu604fZ0MC+GCEw1oWQGoVeIRLIqio7IEZpQ1AW+Rl/23A0lxRgO9YAigOsm8FJXDQQz1dvZ+TgkoXGk0M8xhQy/oyt26m5/vHO+u3XTWhM8dB6KubOjth1dUDe30w3FhGqanZ+9WwzxiI7484WeYtHyPnv/lqJ3kc045K6IFn7tOHYI6IlO8CX9BPBAPOawo4ceaXbQpw7593TYor98hN75t4yYu8q4yCwiA1tIqA/oc4bkmDvJ0O3BG6aFucCwMallwnnj+L7MKAy1Ozq6mtiIAH8UOTXAu4dtiq3r4th0E98b4qOr1UmRmvS7fKNwTIo3cO46F+eaTLmz5kyHSWT64FlL29Ed6TGgXoVe8RgFN7PH1YDo5xha50fEXFFDg2cn1CYItQKmFO5X14bwifa7efqZ5C5vDVWmoJPC/c7jefHr8o6YEeA0qc0FnTLfEZhwNB3gfkVm36WfBl4JPSuYJYnLNjV3vzSj/KjRW5DRSURXmBZQaADNE7mlAZ5EVzbyIIMZQ9O4nPl90HeG74luq5AyClMUVzbHnhkZoFKCXCUXRzPBCy+YFVL3KDHimSFkVzH19YQ/D22pKIYHwywtAS/oj9xzhFipinZ8suBuXZJZSJYXSRwMKioBbv8etmNE8aUsZHrbqh8LaZIgKBnTVHEkqTSP3OWF5zIbyZ5C8bPcM7r5SMrskBmRQSwk0fP7JGW+B8YhVi1VMqx7thcfVoc70OMEYqf1L0e9qrn/bSwvAAAAAElFTkSuQmCC'
 
-
 /**************************************************/
 // has an websocket message already been received
 let alerted = false;
@@ -49,14 +48,9 @@ const BLESendInterval = 100;
 const BLEDataStoppedError = 'foxbot extension stopped receiving data';
 const BLEUUID = {
     service: '018dc080-cddb-7bc5-b08f-8761c95e0509',
-    rxChar: '018dc081-cddb-7bc5-b08f-8761c95e0509',
+    rxChar: '018dc082-cddb-7bc5-b08f-8761c95e0509',
     txChar: '018dc082-cddb-7bc5-b08f-8761c95e0509'
 };
-
-// class BLEWorker{
-    
-// }
-
 
 class FoxBot {
 
@@ -100,6 +94,16 @@ class FoxBot {
         this.reset = this.reset.bind(this);
         this._onConnect = this._onConnect.bind(this);
         this._onMessage = this._onMessage.bind(this);
+
+        this.motor_set_1 = '180'
+        this.motor_set_2 = '180'
+
+        this.motor_cur_1 = ''
+        this.motor_cur_2 = ''
+
+        this.sensor_button = false
+        this.sensor_touch = false
+        this.sensor_impact = false
     }
 
     // /*** WEB ***/
@@ -228,16 +232,40 @@ class FoxBot {
     
     /* Starts reading data from peripheral after BLE has connected to it. */
     _onConnect () {
-        // this._ble.read(BLEUUID.service, BLEUUID.rxChar, true, this._onMessage);
-        // this._timeoutID = window.setTimeout(
-        //     () => this._ble.handleDisconnectError(BLEDataStoppedError),
-        //     BLETimeout
-        // );
+        this._ble.startNotifications(
+            BLEUUID.service,
+            BLEUUID.rxChar,
+            this._onMessage
+        );
     }
 
      /* Process the sensor data from the incoming BLE characteristic.*/
     _onMessage(base64) {
-        const data = Base64Util.base64ToUint8Array(base64);
+
+        const pre_data = Base64Util.base64ToUint8Array(base64);
+        const data = new TextDecoder("utf-8").decode(pre_data);
+
+        if (data.startsWith("motor an ")) {
+            try {
+                let parts = data.split(" ");
+                let angle1 = parseFloat(parts[2]);
+                let angle2 = parseFloat(parts[3]);
+                this.motor_cur_1 = angle1.toString();
+                this.motor_cur_2 = angle2.toString();                
+            } catch (e) {
+                console.error(`Failed to parse angles: ${e}`);
+            }
+        }
+        else if(data.startsWith("sensors ")) {
+            try {
+                let parts = data.split(" ");
+                this.sensor_button = !!parseInt(parts[1]);
+                this.sensor_touch = !!parseInt(parts[2]);
+                this.sensor_impact = !!parseInt(parts[3]);
+            } catch (e) {
+                console.error(`Failed to parse sensor value: ${e}`);
+            }
+        }
 
         // this._sensors.tiltX = data[1] | (data[0] << 8);
         // if (this._sensors.tiltX > (1 << 15)) this._sensors.tiltX -= (1 << 16);
@@ -288,104 +316,7 @@ class Scratch3FoxBotExtension {
             showStatusButton: true,
 
             // your Scratch blocks
-            blocks: [       
-                {
-                    opcode: 'ip_address',
-                    blockType: BlockType.COMMAND,
-                    //text: FormIPBlockR[the_locale],
-                    text: formatMessage({
-                        default: 'ip_address [IP_ADDR]',
-                        description: 'connect bot'
-                    }),
-                    arguments: {
-                        IP_ADDR: {
-                            type: ArgumentType.NUMBER,
-                            defaultValue: '',
-                        },
-                    }
-
-                },
-                {
-                    opcode: 'sendMessage',                    
-                    blockType: BlockType.COMMAND,
-                    text: formatMessage({
-                        default: 'send Message [MSG]',
-                        description: 'send string message'
-                    }),
-                    arguments: {
-                        MSG: {
-                            type: ArgumentType.STRING,
-                            defaultValue: 'Hi!'
-                        }
-                    }
-                },
-                {
-                    opcode: 'moveForward',
-                    blockType: BlockType.COMMAND,
-                    text: formatMessage({
-                        default: '앞으로 [SEC]초 이동하기'
-                    }),
-                    arguments: {
-                        SEC: {
-                            type: ArgumentType.STRING,
-                            defaultValue: '1'
-                        }
-                    }
-                },
-                {
-                    opcode: 'moveBackward',
-                    blockType: BlockType.COMMAND,
-                    text: formatMessage({
-                        default: '뒤로 [SEC]초 이동하기'
-                    }),
-                    arguments: {
-                        SEC: {
-                            type: ArgumentType.STRING,
-                            defaultValue: '1'
-                        }
-                    }
-                },
-                {
-                    opcode: 'stopMove',
-                    blockType: BlockType.COMMAND,
-                    text: formatMessage({
-                        default: '정지하기'
-                    })
-                },
-                {
-                    opcode: 'turnLeft',
-                    blockType: BlockType.COMMAND,
-                    text: formatMessage({
-                        default: '왼쪽으로 [SEC]초 회전하기'
-                    }),
-                    arguments: {
-                        SEC: {
-                            type: ArgumentType.STRING,
-                            defaultValue: '1'
-                        }
-                    }
-                },
-                {
-                    opcode: 'turnRight',
-                    blockType: BlockType.COMMAND,
-                    text: formatMessage({
-                        default: '오른쪽으로 [SEC]초 회전하기'
-                    }),
-                    arguments: {
-                        SEC: {
-                            type: ArgumentType.STRING,
-                            defaultValue: '1'
-                        }
-                    }
-                },
-                // {
-                //     opcode: 'getConnected',
-                //     blockType: BlockType.REPORTER,
-                //     text: formatMessage({
-                //         default: 'Connection state'
-                //     })
-                // },
-                '---',
+            blocks: [
                 {
                     opcode: 'ChangeFace',                    
                     blockType: BlockType.COMMAND,
@@ -396,7 +327,28 @@ class Scratch3FoxBotExtension {
                     arguments: {
                         MODE: {
                             type: ArgumentType.STRING,
-                            defaultValue: 'blink'
+                            defaultValue: 'blink',
+                            "menu": "ChangeFaceMenu"
+                        }
+                    }
+                },
+                '---',                
+                {
+                    opcode: 'SetMotorAngle',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: '모터 목표값 세팅 : [ID]번, [VAL]도',
+                        description: 'Set Motor Angle'
+                    }),
+                    arguments: {
+                        ID: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '1',
+                            "menu": "MotorIDMenu"
+                        },
+                        VAL: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '180'
                         }
                     }
                 },
@@ -404,29 +356,125 @@ class Scratch3FoxBotExtension {
                     opcode: 'ChangeMotorAngle',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: 'Change Motor Angle : Motor id [ID], angle [VAL]',
+                        default: '모터 움직이기 : 목표값',
                         description: 'Change Motor Angle'
+                    })
+                },
+                {
+                    opcode: 'MotorOrigin',                    
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: '모터 움직이기 : 정면',
+                        description: 'Motor Origin'
+                    })
+                },
+                {
+                    opcode: 'getSetMotorValue',
+                    text: formatMessage({
+                        default: '[ID]번 모터 목표값'
                     }),
+                    blockType: BlockType.REPORTER,
                     arguments: {
                         ID: {
                             type: ArgumentType.STRING,
-                            defaultValue: '1'
-                        },
-                        VAL: {
+                            defaultValue: '1',
+                            "menu": "MotorIDMenu"
+                        }
+                    }
+                },
+                {
+                    opcode: 'getCurMotorValue',
+                    text: formatMessage({
+                        default: '[ID]번 모터 현재값'
+                    }),
+                    blockType: BlockType.REPORTER,
+                    arguments: {
+                        ID: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '1',
+                            "menu": "MotorIDMenu"
+                        }
+                    }
+                },
+                {
+                    opcode: 'getCurbutton',
+                    blockType: BlockType.REPORTER,
+                    text: formatMessage({
+                        default: '센서값 : 버튼 눌림 감지됨?'
+                    })
+                },
+                {
+                    opcode: 'getCurtouch',
+                    blockType: BlockType.REPORTER,
+                    text: formatMessage({
+                        default: '센서 : 터치 감지됨?'
+                    })
+                },
+                {
+                    opcode: 'getCurimpact',
+                    blockType: BlockType.REPORTER,
+                    text: formatMessage({
+                        default: '센서 : 충격 감지됨?'
+                    })
+                },
+                '---',
+                {
+                    opcode: 'PlaySound',                    
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: '소리 재생 : [FILE] 효과음',
+                        description: 'Play Sound'
+                    }),
+                    arguments: {
+                        FILE: {
+                            type: ArgumentType.STRING,
+                            defaultValue: 'happy',
+                            "menu": "PlaySoundMenu"
+                        }
+                    }
+                },
+                {
+                    opcode: 'SoundVolume',                    
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: '소리 크기 : 원래 소리 + [VOL]dB',
+                        description: 'Sound Volume'
+                    }),
+                    arguments: {
+                        VOL: {
                             type: ArgumentType.STRING,
                             defaultValue: '0'
                         }
                     }
                 },
-                // {
-                //     opcode: 'getLastMessageReceived',
-                //     blockType: BlockType.REPORTER,
-                //     text: formatMessage({
-                //         default: 'last massage'
-                //         // default: 'get last incoming message: [MESSAGE]',
-                //     })
-                // }           
-            ]
+                {
+                    opcode: 'RecordSound',                    
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: '소리 녹음 : [SEC]초 동안 녹음하기',
+                        description: 'Record Sound'
+                    }),
+                    arguments: {
+                        SEC: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '5'
+                        }
+                    }
+                },
+                {
+                    opcode: 'RecordSoundPlay',                    
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: '소리 녹음 : 녹음된 소리 재생하기',
+                        description: 'Play Recorded Sound'
+                    })
+                },        
+            ],
+            "menus": {
+                "PlaySoundMenu": [{text:"happy",value:"happy"}, {text:"sad",value:"sad"}, {text:"anger",value:"anger"}, {text:"test",value:"test"}],
+                "ChangeFaceMenu": [{text:"blink",value:"blink"}, {text:"happy",value:"happy"}, {text:"sad",value:"sad"}, {text:"anger",value:"anger"}, {text:"R-Fox",value:"RFox"}],
+                "MotorIDMenu": [{text:"1",value:"1"},{text:"2",value:"2"}],
+            }  
         };
     }
 
@@ -434,83 +482,6 @@ class Scratch3FoxBotExtension {
      * implementation of the block with the opcode that matches this name
      *  this will be called when the block is used
      */
-    
-    ip_address(args) {
-        if (args['IP_ADDR']) {
-            ws_ip_address = args['IP_ADDR'];
-            connected = false;
-            connection_pending = false;
-            
-            if (!connected) {
-                if (!connection_pending) {
-                    this.connect();
-                    connection_pending = true;
-                }
-            }
-        }
-    }
-
-    sendMessage (args) {
-        // if (!connected) {
-        //     if (!connection_pending) {
-        //         this.connect();
-        //         connection_pending = true;
-        //     }
-
-        // }
-        // if (!connected) {
-        //     //let callbackEntry = [this.digital_write.bind(this), args];
-        //     //wait_open.push(callbackEntry);
-        // } else {
-        //     strDataSend = '';
-        //     strDataSend = args.MSG;
-        //     window.socketr.send(strDataSend);
-        // }
-        
-        strDataSend = '';
-        strDataSend = args.MSG;
-        this._peripheral.send(strDataSend);
-    }
-
-    moveForward (args) 
-    {
-        strDataSend = 'f '+args.SEC;
-        this._peripheral.send(strDataSend);
-    }
-
-    moveBackward (args) 
-    {
-        strDataSend = 'b '+args.SEC;
-        this._peripheral.send(strDataSend);
-    }
-
-    stopMove () 
-    {
-        strDataSend = 's ';
-        this._peripheral.send(strDataSend);
-    }
-
-    turnLeft (args) 
-    {
-        strDataSend = 'l '+args.SEC;
-        this._peripheral.send(strDataSend);
-    }
-
-    turnRight (args) 
-    {
-        strDataSend = 'r '+args.SEC;
-        this._peripheral.send(strDataSend);
-    }
-
-    // ConnectFoxBot_Web ()
-    // {
-    //     this._peripheral.ws_ConnectBot();
-    // }
-
-    // ConnectFoxBot_Ble ()
-    // {
-    //     //this._peripheral.ws_ConnectBot();
-    // }
 
     ChangeFace (args) {
         strDataSend = 'eye '+args.MODE+ ' 1';
@@ -519,84 +490,101 @@ class Scratch3FoxBotExtension {
         this._peripheral.send(strDataSend);
     }
 
+    MotorOrigin()
+    {
+        strDataSend = 'motorOri'
+        this._peripheral.send(strDataSend);
+    }
+
+    SetMotorAngle (args) {
+
+        if (args.ID=='1')
+        {
+            this._peripheral.motor_vel_1 = args.VAL;
+        }
+        else if (args.ID=='2')
+        {
+            this._peripheral.motor_vel_2 = args.VAL;
+        }
+    }
+
     ChangeMotorAngle (args) {
-        strDataSend = 'motor an '+args.ID+' '+args.VAL;
+        strDataSend = 'motor an '+this._peripheral.motor_vel_1+' '+this._peripheral.motor_vel_2+' sp 50 50';
         //this._peripheral.ws_sendData (strDataSend);
         //window.socketr.send(strDataSend);
         this._peripheral.send(strDataSend);
     }
 
-    // getLastMessageReceived () {
-    //     // refresh message
-    //     return strDataReceved;
-    // }
-
-    getConnected () {
-        return connected;
-    }
-
-    connect() {
-        if (connected) {
-            // ignore additional connection attempts
-            return;
-        } else {
-            connect_attempt = true;
-            let url = "ws://" + ws_ip_address + ":5500";
-            console.log(url);
-            //window.socketr = new WebSocket("ws://127.0.0.1:5500");
-            window.socketr = new WebSocket(url);
-            // msg = JSON.stringify({"id": "to_rpi_gateway"});
-            msg = 'scratch connected!';
+    getSetMotorValue (args)
+    {
+        if (args.ID=='1')
+        {
+            return this._peripheral.motor_set_1;
         }
-
-         // websocket event handlers
-         window.socketr.onopen = function () {
-            // connection complete
-            connected = true;
-            connect_attempt = true;
-            // the message is built above
-            try {
-                //ws.send(msg);
-                window.socketr.send(msg);
-
-            } catch (err) {
-                // ignore this exception
-            }
-            for (let index = 0; index < wait_open.length; index++) {
-                let data = wait_open[index];
-                data[0](data[1]);
-            }
-        };
-
-        window.socketr.onclose = function () {
-            if (alerted === false) {
-                alerted = true;
-                alert(FormWSClosed[the_locale]);}
-            connected = false;
-        };
-
-        // // reporter messages from the board
-        // window.socketr.onmessage = function (message) {
-        //     msg = JSON.parse(message.data);
-        //     let report_type = msg["report"];
-        //     let pin = null;
-        //     let value = null;
-
-        //     // types - digital, analog, sonar
-        //     if (report_type === 'digital_input') {
-        //         pin = msg['pin'];
-        //         pin = parseInt(pin, 10);
-        //         value = msg['value'];
-        //         digital_inputs[pin] = value;
-        //     } else if (report_type === 'analog_input') {
-        //         pin = msg['pin'];
-        //         pin = parseInt(pin, 10);
-        //         value = msg['value'];
-        //         analog_inputs[pin] = value;
-        //     }
-        // };
+        else if (args.ID=='2')
+        {
+            return this._peripheral.motor_set_1;
+        }
     }
 
+    getCurMotorValue (args)
+    {
+        if (args.ID=='1')
+        {
+            return this._peripheral.motor_cur_1;
+        }
+        else if (args.ID=='2')
+        {
+            return this._peripheral.motor_cur_2;
+        }
+    }
+
+    getCurbutton ()
+    {
+        return this._peripheral.sensor_button;
+    }
+
+    getCurtouch ()
+    {
+        return this._peripheral.sensor_touch;
+    }
+
+    getCurimpact ()
+    {
+        return this._peripheral.sensor_impact;
+    }
+
+    PlaySound (args) {
+        // code here
+        strDataSend = 'sound '+args.FILE;
+        //this._peripheral.ws_sendData (strDataSend);
+        //window.socketr.send(strDataSend);
+        this._peripheral.send(strDataSend);
+    }
+
+    SoundVolume (args) {
+        // code here
+        strDataSend = 'volume '+args.VOL;
+        //this._peripheral.ws_sendData (strDataSend);
+        //window.socketr.send(strDataSend);
+        this._peripheral.send(strDataSend);
+    }
+
+    RecordSound (args) {
+        // code here
+        strDataSend = 'record '+'output'+' '+args.SEC;
+        //this._peripheral.ws_sendData (strDataSend);
+        //window.socketr.send(strDataSend);
+        this._peripheral.send(strDataSend);
+    }
+
+    RecordSoundPlay (args) {
+        // code here
+        strDataSend = 'sound '+'output';
+        //this._peripheral.ws_sendData (strDataSend);
+        //window.socketr.send(strDataSend);
+        this._peripheral.send(strDataSend);
+    }
 }
 
 module.exports = Scratch3FoxBotExtension;
