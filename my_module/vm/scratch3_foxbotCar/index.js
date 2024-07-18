@@ -66,7 +66,7 @@ class FoxBotCar {
             back: 0
         }
 
-        this.motor_vel = '100'
+        this.motor_vel = '50'
     }
 
     // set motor data
@@ -98,7 +98,7 @@ class FoxBotCar {
     //get PSD sensor data
     get PSD_Front() {
         let value = '센서 범위 밖'
-        if (this._PSD_sensor.front != 1000)
+        if (this._PSD_sensor.front != 0)
         {
             value = parseFloat(this._PSD_sensor.front/10.0)
         } 
@@ -106,7 +106,7 @@ class FoxBotCar {
     }
     get PSD_Back() {
         let value = '센서 범위 밖'
-        if (this._PSD_sensor.back != 1000)
+        if (this._PSD_sensor.back != 0)
         {
             value = parseFloat(this._PSD_sensor.back/10.0)
         }        
@@ -372,7 +372,7 @@ class Scratch3FoxBotCarExtension {
                     arguments: {
                         VEL: {
                             type: ArgumentType.STRING,
-                            defaultValue: '100'
+                            defaultValue: '50'
                         }
                     }
                 },           
@@ -450,7 +450,7 @@ class Scratch3FoxBotCarExtension {
 
     stopMove () 
     {
-        strDataSend = 's ';
+        strDataSend = 's';
         this._peripheral.setMotor(strDataSend);
     }
 

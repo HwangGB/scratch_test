@@ -104,6 +104,8 @@ class FoxBot {
         this.sensor_button = false
         this.sensor_touch = false
         this.sensor_impact = false
+        this.sensor_adc_val = 0
+        this.sensor_adc_vol = 0.0
     }
 
     // /*** WEB ***/
@@ -262,6 +264,8 @@ class FoxBot {
                 this.sensor_button = !!parseInt(parts[1]);
                 this.sensor_touch = !!parseInt(parts[2]);
                 this.sensor_impact = !!parseInt(parts[3]);
+                this.sensor_adc_val = parseInt(parts[4]);
+                this.sensor_adc_vol = parseFloat(parts[5]);
             } catch (e) {
                 console.error(`Failed to parse sensor value: ${e}`);
             }
@@ -332,75 +336,117 @@ class Scratch3FoxBotExtension {
                         }
                     }
                 },
-                '---',                
+                '---',
+                // {
+                //     opcode: 'SetMotorAngle',
+                //     blockType: BlockType.COMMAND,
+                //     text: formatMessage({
+                //         default: '모터 목표값 세팅 : [ID]번, [VAL]도',
+                //         description: 'Set Motor Angle'
+                //     }),
+                //     arguments: {
+                //         ID: {
+                //             type: ArgumentType.STRING,
+                //             defaultValue: '1',
+                //             "menu": "MotorIDMenu"
+                //         },
+                //         VAL: {
+                //             type: ArgumentType.STRING,
+                //             defaultValue: '180'
+                //         }
+                //     }
+                // },
                 {
-                    opcode: 'SetMotorAngle',
+                    opcode: 'ChangeMotorAngle',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '모터 목표값 세팅 : [ID]번, [VAL]도',
-                        description: 'Set Motor Angle'
+                        default: '모터 움직이기 : 1번 위치 [VAL1]도, 2번 위치 [VAL2]도',
+                        description: 'Change Motor Angle'
                     }),
                     arguments: {
-                        ID: {
+                        VAL1: {
                             type: ArgumentType.STRING,
-                            defaultValue: '1',
-                            "menu": "MotorIDMenu"
+                            defaultValue: '180'
                         },
-                        VAL: {
+                        VAL2: {
                             type: ArgumentType.STRING,
                             defaultValue: '180'
                         }
                     }
                 },
                 {
-                    opcode: 'ChangeMotorAngle',                    
-                    blockType: BlockType.COMMAND,
-                    text: formatMessage({
-                        default: '모터 움직이기 : 목표값',
-                        description: 'Change Motor Angle'
-                    })
-                },
-                {
                     opcode: 'MotorOrigin',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '모터 움직이기 : 정면',
+                        default: '모터 움직이기 : 정면 바라보기',
                         description: 'Motor Origin'
                     })
                 },
                 {
-                    opcode: 'getSetMotorValue',
+                    opcode: 'MotorTorque',                    
+                    blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '[ID]번 모터 목표값'
+                        default: '모터 토크 : 토크 [ONOFF]',
+                        description: 'Motor torque'
                     }),
-                    blockType: BlockType.REPORTER,
                     arguments: {
-                        ID: {
+                        ONOFF: {
                             type: ArgumentType.STRING,
                             defaultValue: '1',
-                            "menu": "MotorIDMenu"
+                            "menu": "MotorTorque"
                         }
                     }
+                },
+                // {
+                //     opcode: 'getSetMotorValue',
+                //     text: formatMessage({
+                //         default: '[ID]번 모터 목표값'
+                //     }),
+                //     blockType: BlockType.REPORTER,
+                //     arguments: {
+                //         ID: {
+                //             type: ArgumentType.STRING,
+                //             defaultValue: '1',
+                //             "menu": "MotorIDMenu"
+                //         }
+                //     }
+                // },
+                // {
+                //     opcode: 'getCurMotorValue',
+                //     text: formatMessage({
+                //         default: '모터 현재값 : [ID]번'
+                //     }),
+                //     blockType: BlockType.REPORTER,
+                //     arguments: {
+                //         ID: {
+                //             type: ArgumentType.STRING,
+                //             defaultValue: '1',
+                //             "menu": "MotorIDMenu"
+                //         }
+                //     }
+                // },
+                {
+                    opcode: 'getCurMotorValue_1',
+                    blockType: BlockType.REPORTER,
+                    text: formatMessage({
+                        default: '모터 : 1번 모터 현재 위치'
+                    })
+                    
                 },
                 {
-                    opcode: 'getCurMotorValue',
-                    text: formatMessage({
-                        default: '[ID]번 모터 현재값'
-                    }),
+                    opcode: 'getCurMotorValue_2',
                     blockType: BlockType.REPORTER,
-                    arguments: {
-                        ID: {
-                            type: ArgumentType.STRING,
-                            defaultValue: '1',
-                            "menu": "MotorIDMenu"
-                        }
-                    }
+                    text: formatMessage({
+                        default: '모터 : 2번 모터 현재 위치'
+                    })
+                    
                 },
+                '---',
                 {
                     opcode: 'getCurbutton',
                     blockType: BlockType.REPORTER,
                     text: formatMessage({
-                        default: '센서값 : 버튼 눌림 감지됨?'
+                        default: '센서 : 버튼 눌림 감지됨?'
                     })
                 },
                 {
@@ -415,6 +461,20 @@ class Scratch3FoxBotExtension {
                     blockType: BlockType.REPORTER,
                     text: formatMessage({
                         default: '센서 : 충격 감지됨?'
+                    })
+                },
+                {
+                    opcode: 'getCurAdcVal',
+                    blockType: BlockType.REPORTER,
+                    text: formatMessage({
+                        default: '센서 : 1번 모듈 adc값'
+                    })
+                },
+                {
+                    opcode: 'getCurAdcVol',
+                    blockType: BlockType.REPORTER,
+                    text: formatMessage({
+                        default: '센서 : 1번 모듈 voltage값'
                     })
                 },
                 '---',
@@ -474,6 +534,7 @@ class Scratch3FoxBotExtension {
                 "PlaySoundMenu": [{text:"happy",value:"happy"}, {text:"sad",value:"sad"}, {text:"anger",value:"anger"}, {text:"test",value:"test"}],
                 "ChangeFaceMenu": [{text:"blink",value:"blink"}, {text:"happy",value:"happy"}, {text:"sad",value:"sad"}, {text:"anger",value:"anger"}, {text:"R-Fox",value:"RFox"}],
                 "MotorIDMenu": [{text:"1",value:"1"},{text:"2",value:"2"}],
+                "MotorTorque": [{text:"ON",value:"1"},{text:"OFF",value:"0"}],
             }  
         };
     }
@@ -496,47 +557,56 @@ class Scratch3FoxBotExtension {
         this._peripheral.send(strDataSend);
     }
 
-    SetMotorAngle (args) {
+    // SetMotorAngle (args) {
 
-        if (args.ID=='1')
-        {
-            this._peripheral.motor_vel_1 = args.VAL;
-        }
-        else if (args.ID=='2')
-        {
-            this._peripheral.motor_vel_2 = args.VAL;
-        }
-    }
+    //     if (args.ID=='1')
+    //     {
+    //         this._peripheral.motor_vel_1 = args.VAL;
+    //     }
+    //     else if (args.ID=='2')
+    //     {
+    //         this._peripheral.motor_vel_2 = args.VAL;
+    //     }
+    // }
 
     ChangeMotorAngle (args) {
+        this._peripheral.motor_vel_1 = args.VAL1;
+        this._peripheral.motor_vel_2 = args.VAL2;
+
         strDataSend = 'motor an '+this._peripheral.motor_vel_1+' '+this._peripheral.motor_vel_2+' sp 50 50';
         //this._peripheral.ws_sendData (strDataSend);
         //window.socketr.send(strDataSend);
         this._peripheral.send(strDataSend);
     }
 
-    getSetMotorValue (args)
+    // getSetMotorValue (args)
+    // {
+    //     if (args.ID=='1')
+    //     {
+    //         return this._peripheral.motor_set_1;
+    //     }
+    //     else if (args.ID=='2')
+    //     {
+    //         return this._peripheral.motor_set_1;
+    //     }
+    // }
+
+    MotorTorque(args)
     {
-        if (args.ID=='1')
-        {
-            return this._peripheral.motor_set_1;
-        }
-        else if (args.ID=='2')
-        {
-            return this._peripheral.motor_set_1;
-        }
+        strDataSend = 'motor tq '+args.ONOFF+' '+args.ONOFF;
+        //this._peripheral.ws_sendData (strDataSend);
+        //window.socketr.send(strDataSend);
+        this._peripheral.send(strDataSend);
     }
 
-    getCurMotorValue (args)
+    getCurMotorValue_1 ()
     {
-        if (args.ID=='1')
-        {
-            return this._peripheral.motor_cur_1;
-        }
-        else if (args.ID=='2')
-        {
-            return this._peripheral.motor_cur_2;
-        }
+        return this._peripheral.motor_cur_1;
+    }
+
+    getCurMotorValue_2 ()
+    {
+        return this._peripheral.motor_cur_2;
     }
 
     getCurbutton ()
@@ -552,6 +622,16 @@ class Scratch3FoxBotExtension {
     getCurimpact ()
     {
         return this._peripheral.sensor_impact;
+    }
+
+    getCurAdcVal ()
+    {
+        return this._peripheral.sensor_adc_val;
+    }
+
+    getCurAdcVol ()
+    {
+        return this._peripheral.sensor_adc_vol;
     }
 
     PlaySound (args) {
