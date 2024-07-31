@@ -66,7 +66,8 @@ class FoxBotCar {
             back: 0
         }
 
-        this.motor_vel = '50'
+        this.motor_vel = '50';
+        this.test = '디버깅용 값입니다!';
     }
 
     // set motor data
@@ -367,14 +368,22 @@ class Scratch3FoxBotCarExtension {
                     opcode: 'motorVel',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '모터제어 : 속도 [VEL]로 바꾸기 (0~255)'
+                        default: '모터제어 : 속도값 설정 [VEL](0~100)'
                     }),
                     arguments: {
                         VEL: {
-                            type: ArgumentType.STRING,
+                            type: ArgumentType.NUMBER,
                             defaultValue: '50'
                         }
                     }
+                },
+                {
+                    opcode: 'getTest',
+                    blockType: BlockType.REPORTER,
+                    text: formatMessage({
+                        default: '테스트 값'
+                    })
+                    
                 },           
             ],
             "menus": {
@@ -468,7 +477,25 @@ class Scratch3FoxBotCarExtension {
 
     motorVel (args)
     {
-        this._peripheral.motor_vel = args.VEL
+        let speed = args.VEL;
+        if (speed > 100)
+        {
+            speed = 100;
+        }
+        else if (speed < 0)
+        {
+            speed = 0;
+        }
+        
+        let speed_m = parseInt(speed*0.7);
+        
+        this._peripheral.motor_vel = (speed_m).toString();
+        this._peripheral.test = this._peripheral.motor_vel;
+    }
+
+    getTest ()
+    {
+        return this._peripheral.test;
     }
     
 }
