@@ -39,5 +39,6 @@ mv package.json $DIR/dependencies/package.json
 ln -s $DIR/dependencies/package.json .
 mv package-lock.json $DIR/dependencies/package-lock.json
 ln -s $DIR/dependencies/package-lock.json .
+
 #echo "Marking the Scratch source as customized"
 #touch $SCRATCH_SRC_HOME/patched

@@ -16,8 +16,13 @@ cp -f $DIR/my_module/vm/scratch3_foxbotCar/index.js scratch3_foxbotCar/index.js
 
 echo "BUILDING SCRATCH VM ..."
 cd $SCRATCH_SRC_HOME/scratch-vm
-NODE_OPTIONS='--openssl-legacy-provider' ./node_modules/.bin/webpack --bail
+NODE_OPTIONS='--openssl-legacy-provider' ./node_modules/.bin/webpack --bail #--watch --progress
 
 echo "BUILDING SCRATCH GUI ..."
 cd $SCRATCH_SRC_HOME/scratch-gui
-NODE_OPTIONS='--openssl-legacy-provider' ./node_modules/.bin/webpack --bail
+NODE_OPTIONS='--openssl-legacy-provider' ./node_modules/.bin/webpack --bail #--watch --progress
+
+# echo "Cleaning up cache..."
+# npm cache verify
+# ./3    $SCRATCH_SRC_HOME/scratch-vm/node_modules/.cache
+# rm -rf $SCRATCH_SRC_HOME/scratch-gui/node_modules/.cache

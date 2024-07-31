@@ -1,16 +1,6 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 
-import foxbotIconURL from './foxbot/foxbot.png';
-import foxbotInsetIconURL from './foxbot/foxbot-small.svg';
-import foxbotConnectionIconURL from './foxbot/foxbot-illustration.svg';
-import foxbotConnectionSmallIconURL from './foxbot/foxbot-small.svg';
-
-import foxbotCarIconURL from './foxbotCar/foxbotCar.png';
-import foxbotCarInsetIconURL from './foxbotCar/foxbotCar-small.svg';
-import foxbotCarConnectionIconURL from './foxbotCar/foxbotCar-illustration.svg';
-import foxbotCarConnectionSmallIconURL from './foxbotCar/foxbotCar-small.svg';
-
 import musicIconURL from './music/music.png';
 import musicInsetIconURL from './music/music-small.svg';
 
@@ -55,6 +45,16 @@ import gdxforIconURL from './gdxfor/gdxfor.png';
 import gdxforInsetIconURL from './gdxfor/gdxfor-small.svg';
 import gdxforConnectionIconURL from './gdxfor/gdxfor-illustration.svg';
 import gdxforConnectionSmallIconURL from './gdxfor/gdxfor-small.svg';
+
+import foxbotIconURL from './foxbot/foxbot.png';
+import foxbotInsetIconURL from './foxbot/foxbot-small.svg';
+import foxbotConnectionIconURL from './foxbot/foxbot-illustration.svg';
+import foxbotConnectionSmallIconURL from './foxbot/foxbot-small.svg';
+
+import foxbotCarIconURL from './foxbotCar/foxbotCar.png';
+import foxbotCarInsetIconURL from './foxbotCar/foxbotCar-small.svg';
+import foxbotCarConnectionIconURL from './foxbotCar/foxbotCar-illustration.svg';
+import foxbotCarConnectionSmallIconURL from './foxbotCar/foxbotCar-small.svg';
 
 export default [
     {

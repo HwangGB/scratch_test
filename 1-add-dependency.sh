@@ -19,3 +19,5 @@ echo "Adding new dependency"
 cd $SCRATCH_SRC_HOME/scratch-vm
 npm install --save $MODULE
 
+# cd $SCRATCH_SRC_HOME/scratch-gui
+# npm install --save $MODULE

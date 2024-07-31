@@ -103,14 +103,14 @@ class FoxBot {
 
         this.sensor_button = false;
         this.sensor_touch = false;
-        this.sensor_impact = false;       
+        this.sensor_impact = false;
 
         // module 1
         this.sensor_adc_val = 0;
         this.sensor_adc_vol = 0.0;
         
         // module 2
-        this.sensor_m2_mode = 0; //0:noting, 1:tempHumid, 2:IMU        
+        this.sensor_m2_mode = 0; //0:noting, 1:tempHumid, 2:IMU
         this.sensor_temp = 0.0;
         this.sensor_humid = 0.0;
         this.sensor_imu_acc_x = 0.0;
@@ -118,9 +118,8 @@ class FoxBot {
         this.sensor_imu_acc_z = 0.0;
         this.sensor_imu_gyr_x = 0.0;
         this.sensor_imu_gyr_y = 0.0;
-        this.sensor_imu_gyr_z = 0.0;        
-
-        this.test = '디버깅용 값입니다.';
+        this.sensor_imu_gyr_z = 0.0;
+        
     }
 
     // /*** WEB ***/
@@ -282,28 +281,6 @@ class FoxBot {
                 this.sensor_adc_val = parseInt(parts[4]);
                 this.sensor_adc_vol = parseFloat(parts[5]);
 
-                let sensor_cmd = parts[6];
-                if (sensor_cmd == '-1.0')
-                {
-                    this.sensor_m2_mode = 0;
-                }
-                else if (sensor_cmd == 'm2_imu')
-                {
-                    this.sensor_imu_acc_x = parseFloat(parts[7]);
-                    this.sensor_imu_acc_y = parseFloat(parts[8]);
-                    this.sensor_imu_acc_z = parseFloat(parts[9]);
-                    this.sensor_imu_gyr_x = parseFloat(parts[10]);
-                    this.sensor_imu_gyr_y = parseFloat(parts[11]);
-                    this.sensor_imu_gyr_z = parseFloat(parts[12]);
-                    this.sensor_m2_mode = 1; 
-
-                }
-                else if (sensor_cmd == 'm2_th')
-                {
-                    this.sensor_temp = parseFloat(parts[7]);
-                    this.sensor_humid = parseFloat(parts[8]);
-                    this.sensor_m2_mode = 2;
-                }
                 
             } catch (e) {
                 console.error(`Failed to parse sensor value: ${e}`);
@@ -515,7 +492,21 @@ class Scratch3FoxBotExtension {
                             "menu": "Module1_AdcVol"
                         }
                     }
-                },                
+                },
+                {
+                    opcode: 'getCurTemp',
+                    blockType: BlockType.REPORTER,
+                    text: formatMessage({
+                        default: '센서 : 2번 모듈 [TH]값'
+                    }),
+                    arguments: {
+                        TH: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '1',
+                            "menu": "Module2_TempHumid"
+                        }
+                    }
+                },
                 {
                     opcode: 'getCurIMU',
                     blockType: BlockType.REPORTER,
@@ -534,28 +525,6 @@ class Scratch3FoxBotExtension {
                             "menu": "Module2_XYZ"
                         }
                     }
-                },
-                {
-                    opcode: 'getCurTemp',
-                    blockType: BlockType.REPORTER,
-                    text: formatMessage({
-                        default: '센서 : 2번 모듈 [TH]값'
-                    }),
-                    arguments: {
-                        TH: {
-                            type: ArgumentType.STRING,
-                            defaultValue: '1',
-                            "menu": "Module2_TempHumid"
-                        }
-                    }
-                },
-                {
-                    opcode: 'getTest',
-                    blockType: BlockType.REPORTER,
-                    text: formatMessage({
-                        default: '테스트 값'
-                    })
-                    
                 },
                 '---',
                 {
@@ -720,70 +689,51 @@ class Scratch3FoxBotExtension {
         }
     }
 
-    getCurIMU (args)
-    {
-        if (this._peripheral.sensor_m2_mode==1)
-        {
-            if (args.AG=='1')
-            {
-                if (args.XYZ=='1')
-                {
-                    return this._peripheral.sensor_imu_acc_x;
-                }
-                else if (args.XYZ=='2')
-                {
-                    return this._peripheral.sensor_imu_acc_y;
-                }
-                else if (args.XYZ=='3')
-                {
-                    return this._peripheral.sensor_imu_acc_z;
-                }
-                
-            }
-            else if (args.AG=='2')
-            {
-                if (args.XYZ=='1')
-                {
-                    return this._peripheral.sensor_imu_gyr_x;
-                }
-                else if (args.XYZ=='2')
-                {
-                    return this._peripheral.sensor_imu_gyr_y;
-                }
-                else if (args.XYZ=='3')
-                {
-                    return this._peripheral.sensor_imu_gyr_z;
-                }
-            }
-        }
-        else
-        {
-            return 'IMU 센서 연결 안 됨'
-        }  
-    }
-
     getCurTemp (args)
     {
-        if (this._peripheral.sensor_m2_mode==2)
+        if (args.TH=='1')
         {
-            if (args.TH=='1')
-            {
-                return this._peripheral.sensor_temp;
-            }
-            else if (args.TH=='2')
-            {
-                return this._peripheral.sensor_humid;
-            }
+            return this._peripheral.sensor_temp;
         }
-        else
+        else if (args.TH=='2')
         {
-            return '온습도 센서 연결 안 됨'
-        }        
+            return this._peripheral.sensor_humid;
+        }
     }
 
-    getTest ()
-    {
-        return this._peripheral.test;
+    getCurIMU (args)
+    {        
+        if (args.AG=='1')
+        {
+            if (args.XYZ=='1')
+            {
+                return this._peripheral.sensor_imu_acc_x;
+            }
+            else if (args.XYZ=='2')
+            {
+                return this._peripheral.sensor_imu_acc_y;
+            }
+            else if (args.XYZ=='3')
+            {
+                return this._peripheral.sensor_imu_acc_z;
+            }
+            
+        }
+        else if (args.AG=='2')
+        {
+            if (args.XYZ=='1')
+            {
+                return this._peripheral.sensor_imu_gyr_x;
+            }
+            else if (args.XYZ=='2')
+            {
+                return this._peripheral.sensor_imu_gyr_y;
+            }
+            else if (args.XYZ=='3')
+            {
+                return this._peripheral.sensor_imu_gyr_z;
+            }
+        }
     }
 
     PlaySound (args) {
