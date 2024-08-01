@@ -432,7 +432,7 @@ class Scratch3FoxBotExtension {
                         ONOFF: {
                             type: ArgumentType.STRING,
                             defaultValue: '1',
-                            "menu": "MotorTorque"
+                            "menu": "OnOff"
                         }
                     }
                 },
@@ -481,6 +481,21 @@ class Scratch3FoxBotExtension {
                     
                 },
                 '---',
+                {
+                    opcode: 'CameraOnoff',                    
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        default: '센서 : 카메라 [ONOFF]',
+                        description: 'Camera onoff'
+                    }),
+                    arguments: {
+                        ONOFF: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '0',
+                            "menu": "OnOff"
+                        }
+                    }
+                },
                 {
                     opcode: 'getCurbutton',
                     blockType: BlockType.REPORTER,
@@ -614,7 +629,7 @@ class Scratch3FoxBotExtension {
                 "PlaySoundMenu": [{text:"happy",value:"happy"}, {text:"sad",value:"sad"}, {text:"anger",value:"anger"}, {text:"test",value:"test"}],
                 "ChangeFaceMenu": [{text:"blink",value:"blink"}, {text:"happy",value:"happy"}, {text:"sad",value:"sad"}, {text:"anger",value:"anger"}, {text:"R-Fox",value:"RFox"}],
                 "MotorIDMenu": [{text:"1",value:"1"},{text:"2",value:"2"}],
-                "MotorTorque": [{text:"ON",value:"1"},{text:"OFF",value:"0"}],
+                "OnOff": [{text:"ON",value:"1"},{text:"OFF",value:"0"}],
                 "Module1_AdcVol": [{text:"ADC",value:"1"},{text:"전압",value:"2"}],
                 "Module2_TempHumid": [{text:"온도",value:"1"},{text:"습도",value:"2"}],
                 "Module2_IMU": [{text:"가속도",value:"1"},{text:"각속도",value:"2"}],
@@ -691,6 +706,12 @@ class Scratch3FoxBotExtension {
     getCurMotorValue_2 ()
     {
         return this._peripheral.motor_cur_2;
+    }
+
+    CameraOnoff(args)
+    {
+        strDataSend = 'camera '+args.ONOFF;
+        this._peripheral.send(strDataSend);
     }
 
     getCurbutton ()
