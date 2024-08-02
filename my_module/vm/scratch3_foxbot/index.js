@@ -310,21 +310,6 @@ class FoxBot {
                 console.error(`Failed to parse sensor value: ${e}`);
             }
         }
-
-        // this._sensors.tiltX = data[1] | (data[0] << 8);
-        // if (this._sensors.tiltX > (1 << 15)) this._sensors.tiltX -= (1 << 16);
-        // this._sensors.tiltY = data[3] | (data[2] << 8);
-        // if (this._sensors.tiltY > (1 << 15)) this._sensors.tiltY -= (1 << 16);
-
-        // this._sensors.buttonA = data[4];
-        // this._sensors.buttonB = data[5];
-
-        // // cancel disconnect timeout and start a new one
-        // window.clearInterval(this._timeoutID);
-        // this._timeoutID = window.setInterval(
-        //     () => this._ble.handleDisconnectError(BLEDataStoppedError),
-        //     BLETimeout
-        // );
     }
 }
 
