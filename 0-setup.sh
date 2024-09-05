@@ -21,6 +21,7 @@ cd $SCRATCH_SRC_HOME/scratch-vm/src/extensions
 #cp -f $DIR/my_module/vm/scratch3_foxbot/index.js scratch3_foxbot/index.js
 cp -Rf $DIR/my_module/vm/scratch3_foxbot .
 cp -Rf $DIR/my_module/vm/scratch3_foxbotCar .
+cp -Rf $DIR/my_module/vm/scratch3_tm2scratch .
 
 echo "Patching Scratch source to enable extension"
 cd $SCRATCH_SRC_HOME/scratch-vm/src/extension-support
@@ -33,6 +34,7 @@ echo "Copying in the Scratch extension files"
 cd $SCRATCH_SRC_HOME/scratch-gui/src/lib/libraries/extensions
 cp -Rf $DIR/my_module/gui/foxbot .
 cp -Rf $DIR/my_module/gui/foxbotCar .
+cp -Rf $DIR/my_module/gui/tm2scratch .
 
 cd $SCRATCH_SRC_HOME/scratch-vm
 mv package.json $DIR/dependencies/package.json

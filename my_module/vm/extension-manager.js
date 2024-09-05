@@ -25,7 +25,8 @@ const builtinExtensions = {
     boost: () => require('../extensions/scratch3_boost'),
     gdxfor: () => require('../extensions/scratch3_gdx_for'),
     foxbot: () => require('../extensions/scratch3_foxbot'),
-    foxbotCar: () => require('../extensions/scratch3_foxbotCar')
+    foxbotCar: () => require('../extensions/scratch3_foxbotCar'),
+    tm2scratch: () => require('../extensions/scratch3_tm2scratch')
 };
 
 /**
