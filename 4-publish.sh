@@ -25,9 +25,10 @@ git config --global user.name "HwangGB"
 git config --global --add safe.directory /workspaces/scratch_test
 #git add my_module
 #git add dependencies
-git add -A
-git commit -m "Update"
-git push origin master
+
+# git add -A
+# git commit -m "Update"
+# git push origin master
 
 echo "Building the Scratch fork"
 ./2-build.sh
