@@ -471,7 +471,7 @@ class Scratch3FoxBotExtension {
                     opcode: 'CameraOnoff',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '센서 : 카메라 [ONOFF]',
+                        default: '카메라 [ONOFF]',
                         description: 'Camera onoff'
                     }),
                     arguments: {
@@ -486,28 +486,28 @@ class Scratch3FoxBotExtension {
                     opcode: 'getCurbutton',
                     blockType: BlockType.REPORTER,
                     text: formatMessage({
-                        default: '센서 : 버튼 눌림 감지됨?'
+                        default: '버튼 눌림 감지됨?'
                     })
                 },
                 {
                     opcode: 'getCurtouch',
                     blockType: BlockType.REPORTER,
                     text: formatMessage({
-                        default: '센서 : 터치 감지됨?'
+                        default: '터치 감지됨?'
                     })
                 },
                 {
                     opcode: 'getCurimpact',
                     blockType: BlockType.REPORTER,
                     text: formatMessage({
-                        default: '센서 : 충격 감지됨?'
+                        default: '충격 감지됨?'
                     })
                 },
                 {
                     opcode: 'getCurAdcVal',
                     blockType: BlockType.REPORTER,
                     text: formatMessage({
-                        default: '센서 : 1번 모듈 [AdcVol]값'
+                        default: ' 1번 모듈 [AdcVol]값' // 숫자로 시작하면 오류남. 앞에 공백 넣어줘야 함. (why?)
                     }),
                     arguments: {
                         AdcVol: {
@@ -518,17 +518,26 @@ class Scratch3FoxBotExtension {
                     }
                 },                
                 {
-                    opcode: 'getCurIMU',
+                    opcode: 'getCurIMUacc',
                     blockType: BlockType.REPORTER,
                     text: formatMessage({
-                        default: '센서 : 2번 모듈 IMU [AG]의 [XYZ]값'
+                        default: ' 2번 모듈 IMU 가속도의 [XYZ]값'
                     }),
                     arguments: {
-                        AG: {
+                        XYZ: {
                             type: ArgumentType.STRING,
                             defaultValue: '1',
-                            "menu": "Module2_IMU"
-                        },
+                            "menu": "Module2_XYZ"
+                        }
+                    }
+                },
+                {
+                    opcode: 'getCurIMUgyr',
+                    blockType: BlockType.REPORTER,
+                    text: formatMessage({
+                        default: ' 2번 모듈 IMU 각속도의 [XYZ]값'
+                    }),
+                    arguments: {
                         XYZ: {
                             type: ArgumentType.STRING,
                             defaultValue: '1',
@@ -540,7 +549,7 @@ class Scratch3FoxBotExtension {
                     opcode: 'getCurTemp',
                     blockType: BlockType.REPORTER,
                     text: formatMessage({
-                        default: '센서 : 2번 모듈 [TH]값'
+                        default: ' 2번 모듈 [TH]값'
                     }),
                     arguments: {
                         TH: {
@@ -550,14 +559,14 @@ class Scratch3FoxBotExtension {
                         }
                     }
                 },
-                {
-                    opcode: 'getTest',
-                    blockType: BlockType.REPORTER,
-                    text: formatMessage({
-                        default: '테스트 값'
-                    })
+                // {
+                //     opcode: 'getTest',
+                //     blockType: BlockType.REPORTER,
+                //     text: formatMessage({
+                //         default: '테스트 값'
+                //     })
                     
-                },
+                // },
                 '---',
                 {
                     opcode: 'PlaySound',                    
@@ -578,7 +587,7 @@ class Scratch3FoxBotExtension {
                     opcode: 'SoundVolume',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '소리 크기 : 원래 소리 + [VOL]dB',
+                        default: '소리 크기 키우기 + [VOL]dB',
                         description: 'Sound Volume'
                     }),
                     arguments: {
@@ -612,11 +621,11 @@ class Scratch3FoxBotExtension {
                 },        
             ],
             "menus": {
-                "PlaySoundMenu": [{text:"happy",value:"happy"}, {text:"sad",value:"sad"}, {text:"anger",value:"anger"}, {text:"test",value:"test"}],
-                "ChangeFaceMenu": [{text:"blink",value:"blink"}, {text:"happy",value:"happy"}, {text:"sad",value:"sad"}, {text:"anger",value:"anger"}, {text:"R-Fox",value:"RFox"}],
+                "PlaySoundMenu": [{text:"행복",value:"happy"}, {text:"슬픔",value:"sad"}, {text:"화남",value:"anger"}, {text:"test",value:"test"}],
+                "ChangeFaceMenu": [{text:"기본",value:"blink"}, {text:"행복",value:"happy"}, {text:"슬픔",value:"sad"}, {text:"화남",value:"anger"}, {text:"R-Fox",value:"RFox"}],
                 "MotorIDMenu": [{text:"1",value:"1"},{text:"2",value:"2"}],
-                "OnOff": [{text:"ON",value:"1"},{text:"OFF",value:"0"}],
-                "Module1_AdcVol": [{text:"ADC",value:"1"},{text:"전압",value:"2"}],
+                "OnOff": [{text:"켜기",value:"1"},{text:"끄기",value:"0"}],
+                "Module1_AdcVol": [{text:"아날로그",value:"1"},{text:"전압",value:"2"}],
                 "Module2_TempHumid": [{text:"온도",value:"1"},{text:"습도",value:"2"}],
                 "Module2_IMU": [{text:"가속도",value:"1"},{text:"각속도",value:"2"}],
                 "Module2_XYZ": [{text:"X",value:"1"},{text:"Y",value:"2"},{text:"Z",value:"3"}],
@@ -727,40 +736,44 @@ class Scratch3FoxBotExtension {
         }
     }
 
-    getCurIMU (args)
+    getCurIMUacc (args)
     {
         if (this._peripheral.sensor_m2_mode==1)
         {
-            if (args.AG=='1')
+            if (args.XYZ=='1')
             {
-                if (args.XYZ=='1')
-                {
-                    return this._peripheral.sensor_imu_acc_x;
-                }
-                else if (args.XYZ=='2')
-                {
-                    return this._peripheral.sensor_imu_acc_y;
-                }
-                else if (args.XYZ=='3')
-                {
-                    return this._peripheral.sensor_imu_acc_z;
-                }
-                
+                return this._peripheral.sensor_imu_acc_x;
             }
-            else if (args.AG=='2')
+            else if (args.XYZ=='2')
             {
-                if (args.XYZ=='1')
-                {
-                    return this._peripheral.sensor_imu_gyr_x;
-                }
-                else if (args.XYZ=='2')
-                {
-                    return this._peripheral.sensor_imu_gyr_y;
-                }
-                else if (args.XYZ=='3')
-                {
-                    return this._peripheral.sensor_imu_gyr_z;
-                }
+                return this._peripheral.sensor_imu_acc_y;
+            }
+            else if (args.XYZ=='3')
+            {
+                return this._peripheral.sensor_imu_acc_z;
+            }
+        }
+        else
+        {
+            return 'IMU 센서 연결 안 됨'
+        }  
+    }
+
+    getCurIMUgyr (args)
+    {
+        if (this._peripheral.sensor_m2_mode==1)
+        {
+            if (args.XYZ=='1')
+            {
+                return this._peripheral.sensor_imu_gyr_x;
+            }
+            else if (args.XYZ=='2')
+            {
+                return this._peripheral.sensor_imu_gyr_y;
+            }
+            else if (args.XYZ=='3')
+            {
+                return this._peripheral.sensor_imu_gyr_z;
             }
         }
         else
