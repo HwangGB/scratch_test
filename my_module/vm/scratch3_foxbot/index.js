@@ -411,7 +411,7 @@ class Scratch3FoxBotExtension {
                     opcode: 'MotorTorque',                    
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '모터 토크 : 토크 [ONOFF]',
+                        default: '모터 힘 [ONOFF]',
                         description: 'Motor torque'
                     }),
                     arguments: {
