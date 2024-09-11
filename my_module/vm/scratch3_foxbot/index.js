@@ -361,26 +361,6 @@ class Scratch3FoxBotExtension {
                         }
                     }
                 },
-                '---',
-                // {
-                //     opcode: 'SetMotorAngle',
-                //     blockType: BlockType.COMMAND,
-                //     text: formatMessage({
-                //         default: '모터 목표값 세팅 : [ID]번, [VAL]도',
-                //         description: 'Set Motor Angle'
-                //     }),
-                //     arguments: {
-                //         ID: {
-                //             type: ArgumentType.STRING,
-                //             defaultValue: '1',
-                //             "menu": "MotorIDMenu"
-                //         },
-                //         VAL: {
-                //             type: ArgumentType.STRING,
-                //             defaultValue: '180'
-                //         }
-                //     }
-                // },
                 {
                     opcode: 'ChangeMotorAngle',                    
                     blockType: BlockType.COMMAND,

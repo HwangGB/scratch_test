@@ -279,7 +279,7 @@ class Scratch3FoxBotCarExtension {
                 {
                     opcode: 'getIRSensors',
                     text: formatMessage({
-                        default: '센서값 : IR센서 [IR_DIRECTION]'
+                        default: '센서값 : 바닥 센서 [IR_DIRECTION]'
                     }),
                     blockType: BlockType.REPORTER,
                     arguments: {
@@ -293,7 +293,7 @@ class Scratch3FoxBotCarExtension {
                 {
                     opcode: 'getPSDSensors',
                     text: formatMessage({
-                        default: '센서값 : PSD센서 [PSD_DIRECTION]'
+                        default: '센서값 : 거리 감지 센서 [PSD_DIRECTION]'
                     }),
                     blockType: BlockType.REPORTER,
                     arguments: {
@@ -306,12 +306,17 @@ class Scratch3FoxBotCarExtension {
                 },
                 '---',
                 {
-                    opcode: 'moveForward',
+                    opcode: 'moveForwardBackward',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '모터제어 : 앞으로 [SEC]초 이동하기'
+                        default: '모터제어 : [DIR_FB]으로 [SEC]초 이동하기'
                     }),
                     arguments: {
+                        DIR_FB: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '1',
+                            "menu": "DIR_FB"
+                        },
                         SEC: {
                             type: ArgumentType.NUMBER,
                             defaultValue: '1'
@@ -319,12 +324,17 @@ class Scratch3FoxBotCarExtension {
                     }
                 },
                 {
-                    opcode: 'moveBackward',
+                    opcode: 'turnLeft',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
-                        default: '모터제어 : 뒤로 [SEC]초 이동하기'
+                        default: '모터제어 : [DIR_LR]으로 [SEC]초 회전하기'
                     }),
                     arguments: {
+                        DIR_LR: {
+                            type: ArgumentType.STRING,
+                            defaultValue: '1',
+                            "menu": "DIR_LR"
+                        },
                         SEC: {
                             type: ArgumentType.NUMBER,
                             defaultValue: '1'
@@ -337,32 +347,6 @@ class Scratch3FoxBotCarExtension {
                     text: formatMessage({
                         default: '모터제어 : 정지하기'
                     })
-                },
-                {
-                    opcode: 'turnLeft',
-                    blockType: BlockType.COMMAND,
-                    text: formatMessage({
-                        default: '모터제어 : 왼쪽으로 [SEC]초 회전하기'
-                    }),
-                    arguments: {
-                        SEC: {
-                            type: ArgumentType.NUMBER,
-                            defaultValue: '1'
-                        }
-                    }
-                },
-                {
-                    opcode: 'turnRight',
-                    blockType: BlockType.COMMAND,
-                    text: formatMessage({
-                        default: '모터제어 : 오른쪽으로 [SEC]초 회전하기'
-                    }),
-                    arguments: {
-                        SEC: {
-                            type: ArgumentType.NUMBER,
-                            defaultValue: '1'
-                        }
-                    }
                 },
                 {
                     opcode: 'motorVel',
@@ -398,7 +382,9 @@ class Scratch3FoxBotCarExtension {
                 "PSD_DIRECTION": [
                     {text:FoxbotCarPSDSensorDirection.FRONT,value:FoxbotCarPSDSensorDirection.FRONT},
                     {text:FoxbotCarPSDSensorDirection.BACK,value:FoxbotCarPSDSensorDirection.BACK},
-                ]
+                ],
+                "DIR_FB": [{text:"앞쪽",value:"1"},{text:"뒤쪽",value:"0"}],
+                "DIR_LR": [{text:"왼쪽",value:"1"},{text:"오른쪽",value:"0"}],
             }  
         };
     }
@@ -445,15 +431,21 @@ class Scratch3FoxBotCarExtension {
             }
     }
 
-    moveForward (args) 
+    moveForwardBackward (args) 
     {
-        strDataSend = 'f '+(args.SEC*1000).toString();
-        this._peripheral.setMotor(strDataSend);
-    }
+        if (args.DIR_FB=='1')
+        {
+            strDataSend = 'f '+(args.SEC*1000).toString();
+        }
+        else if (args.DIR_FB=='0')
+        {
+            strDataSend = 'b '+(args.SEC*1000).toString();
+        }
+        else
+        {
+            return 0;
+        }
 
-    moveBackward (args) 
-    {
-        strDataSend = 'b '+(args.SEC*1000).toString();
         this._peripheral.setMotor(strDataSend);
     }
 
@@ -463,15 +455,21 @@ class Scratch3FoxBotCarExtension {
         this._peripheral.setMotor(strDataSend);
     }
 
-    turnLeft (args) 
+    turnLeftRight (args) 
     {
-        strDataSend = 'l '+(args.SEC*1000).toString();
-        this._peripheral.setMotor(strDataSend);
-    }
+        if (args.DIR_LR=='1')
+        {
+            strDataSend = 'l '+(args.SEC*1000).toString();
+        }
+        else if (args.DIR_LR=='0')
+        {
+            strDataSend = 'r '+(args.SEC*1000).toString();
+        }
+        else
+        {
+            return 0;
+        }
 
-    turnRight (args) 
-    {
-        strDataSend = 'r '+(args.SEC*1000).toString();
         this._peripheral.setMotor(strDataSend);
     }
 
